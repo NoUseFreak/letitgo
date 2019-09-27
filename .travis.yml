@@ -2,7 +2,7 @@ language: go
 go:
 - stable
 deploy:
-  provider: releases
+- provider: releases
   api_key:
     secure: MLp+wJL4oDGWdlVIHi98iPAaw5mklEp+iMb46skD3ZlRQoAolhAXyq1K+vZ4X7xt+ufxZiK6f0tahnHigxo/T85qnlJOVybmSYX9/tn/W7sBEtKhYoPbjOrU5ViosB7hsWxX5YUEXVHNDaSebfs5H0yVkGS14jeXs/MxxfKPp5KkdifLzEGocqH2A05KV9ZiYhuzqEnKUlgNDoEPJyULCCLebm2pc4MgadK9ToeZ9kjovSwkXdTtam8mhr/zLq4XI/7kRxXg/V8SGWKUtV5ATijzR85bxgK2sYPzb6CcmUaN1RKAMq+1HSutnIkPQbXiyqkQE7w55Hx1I3xIXHceRAE06FFYKUxwr5b/FslrWErhfO1Af1TbLfucIJ186aOeuIxcqVl254s/ID1varwCZzQ9KuNa6mb7w5zZRunMJ+vq7iaplm9HdABaXuHta8EzAysT/4caMPejegmG+iJ2kpOO33cxhi9mTWx6lQcpjm+wIP2GOhCxs11XxVUE3Ye2naChdUV40Tx+tr53Rpu6wTeBEEDxaOibCag2u+DCsD9pl5RzkjzufFer3ZpHx4LJMWB27mW3TXD6BRc+wNJgzV9Kh1d7Vm1JB4lJf9/gcRrloEZ5quysORiGanR4iAkJC71CliHaXI1dILEhY5XBrz21oW59I4qrFOkOk8e8Bss=
   file_glob: true
@@ -12,3 +12,12 @@ deploy:
     repo: NoUseFreak/release
     branch: master
     tags: true
+- provider: script
+  script: bash scripts/homebrew.sh
+  on:
+    repo: NoUseFreak/release
+    branch: master
+    tags: true
+env:
+  global:
+    secure: eXU8LpBG3MVGFrln0lf/Me/JgOIpxy9m14OHLSeHZgCZOkRlzMIulBhqliOM/7jydZZ9IO7ESRVi37SLlOK6ohRDgmJ6sbYm7NEnnoiaG6+fJ5ZhJ9niramDpOF4BSEXLBbWS6ZTGNrpHLIWdgHlcJVzlsbpc/V2ITAHJLiMPVSisdfUFVHcEdx7Ak58o2CYow8RVPFRTEGd20ZDl0ZlLP29sj+BlcrqHuaC/0DKttBO5s16nYf75e4Hg5sK4yFnq456gp8sVJHjBm9AoYVThDtulhAAK/U0k5CL8fzsfJViWFLkPJbqe08+jtoQkG8RPC7OK7Y5KJOM2sgEoJT+ujRV7V9aB6tpNwdpM9sPOrnnvvSy+2KzwmBSnUYzkHcAvkBxVtD9xu3flb74ajHvpqFDP+IG0j9njAIJ6RRm6+EZzF+vmv541UITQJJxz1ylBoh2AsKNnV7FZ9NCgDND+0RpPz2gl5m5nyTdkuo4IJcVsqjAdO608iRC0DnKlWDNu5eV04XC/n/HfTOl3FpTsth3/p4l/5LT3ncH3BCoruqk63VePwiZMhPVnP/xtnezDl2JjZiEObxAIuc4E9GdM/FIWjLrht6OcrCdF1cBeBXpg4t6JAsIkv5lyitINJErZckak2jBaLCQEbDkMSLWb/vE3n8mARDRI67yYI3vqxs=
