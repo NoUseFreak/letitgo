@@ -1,1 +1,1 @@
-cmd/release/main.go
+cmd/letitgo/main.go
