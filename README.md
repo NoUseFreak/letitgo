@@ -22,7 +22,7 @@ The following example configuration will update `Formula/letitgo.rb`.
 ```yaml
 homebrew:
   - name: letitgo
-    description: GitTeams gives you insight into multiple repositories at once.
+    description: LetItGo automates releases.
     homepage: https://github.com/NoUseFreak/letitgo
     url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/darwin_amd64.zip
     version: "{{ .Version }}"
