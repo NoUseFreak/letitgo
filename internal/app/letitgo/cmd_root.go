@@ -1,4 +1,4 @@
-package release
+package letitgo
 
 import (
 	"fmt"
@@ -8,9 +8,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "releaser <version>",
-	Short: "Release helper",
-	Long:  `Releaser`,
+	Use:   "letitgo <version>",
+	Short: "LetItGo Release helper",
+	Long:  `LetItGo`,
 }
 
 // Execute runs the cli application.

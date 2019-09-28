@@ -9,4 +9,4 @@ DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 
 cd "$DIR"
 
-go run cmd/release/main.go homebrew $(git describe --tags --abbrev=0)
+go run cmd/letitgo/main.go homebrew $(git describe --tags --abbrev=0)

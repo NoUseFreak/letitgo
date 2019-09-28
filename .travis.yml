@@ -2,20 +2,20 @@ language: go
 go:
 - stable
 deploy:
-- provider: releases
+- provider: letitgo
   api_key:
     secure: MLp+wJL4oDGWdlVIHi98iPAaw5mklEp+iMb46skD3ZlRQoAolhAXyq1K+vZ4X7xt+ufxZiK6f0tahnHigxo/T85qnlJOVybmSYX9/tn/W7sBEtKhYoPbjOrU5ViosB7hsWxX5YUEXVHNDaSebfs5H0yVkGS14jeXs/MxxfKPp5KkdifLzEGocqH2A05KV9ZiYhuzqEnKUlgNDoEPJyULCCLebm2pc4MgadK9ToeZ9kjovSwkXdTtam8mhr/zLq4XI/7kRxXg/V8SGWKUtV5ATijzR85bxgK2sYPzb6CcmUaN1RKAMq+1HSutnIkPQbXiyqkQE7w55Hx1I3xIXHceRAE06FFYKUxwr5b/FslrWErhfO1Af1TbLfucIJ186aOeuIxcqVl254s/ID1varwCZzQ9KuNa6mb7w5zZRunMJ+vq7iaplm9HdABaXuHta8EzAysT/4caMPejegmG+iJ2kpOO33cxhi9mTWx6lQcpjm+wIP2GOhCxs11XxVUE3Ye2naChdUV40Tx+tr53Rpu6wTeBEEDxaOibCag2u+DCsD9pl5RzkjzufFer3ZpHx4LJMWB27mW3TXD6BRc+wNJgzV9Kh1d7Vm1JB4lJf9/gcRrloEZ5quysORiGanR4iAkJC71CliHaXI1dILEhY5XBrz21oW59I4qrFOkOk8e8Bss=
   file_glob: true
   file: build/pkg/*
   skip_cleanup: true
   on:
-    repo: NoUseFreak/release
+    repo: NoUseFreak/letitgo
     branch: master
     tags: true
 - provider: script
   script: bash scripts/homebrew.sh
   on:
-    repo: NoUseFreak/release
+    repo: NoUseFreak/letitgo
     branch: master
     tags: true
 env:

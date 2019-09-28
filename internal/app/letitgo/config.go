@@ -1,10 +1,10 @@
-package release
+package letitgo
 
 import (
 	"io/ioutil"
 	"log"
 
-	"github.com/NoUseFreak/release/internal/app/homebrew"
+	"github.com/NoUseFreak/letitgo/internal/app/homebrew"
 	"gopkg.in/yaml.v2"
 )
 

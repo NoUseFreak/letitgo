@@ -1,8 +1,8 @@
 homebrew:
-  - name: release
+  - name: letitgo
     description: GitTeams gives you insight into multiple repositories at once.
-    homepage: https://github.com/NoUseFreak/release
-    url: https://github.com/NoUseFreak/release/releases/download/{{ .Version }}/darwin_amd64.zip
+    homepage: https://github.com/NoUseFreak/letitgo
+    url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/darwin_amd64.zip
     version: "{{ .Version }}"
     tap:
       url: git@github.com:NoUseFreak/homebrew-brew.git

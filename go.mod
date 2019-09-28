@@ -1,4 +1,4 @@
-module github.com/NoUseFreak/release
+module github.com/NoUseFreak/letitgo
 
 go 1.13
 
