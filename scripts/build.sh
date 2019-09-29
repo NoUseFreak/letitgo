@@ -17,7 +17,7 @@ XC_EXCLUDE_OSARCH="!darwin/arm !darwin/386"
 
 # Delete the build dir
 echo "==> Removing build directory..."
-rm -rf build/*
+rm -rf build/{bin,pkg}
 mkdir -p build/{bin,pkg}
 
 if ! which gox > /dev/null; then

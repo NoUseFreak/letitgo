@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/NoUseFreak/letitgo/internal/app/ghrelease"
 	"github.com/NoUseFreak/letitgo/internal/app/homebrew"
 	"gopkg.in/yaml.v2"
 )
@@ -16,8 +17,9 @@ func NewConfig(file string) Config {
 }
 
 type Config struct {
-	file     string
-	Homebrew []homebrew.Homebrew
+	file      string
+	Homebrew  []homebrew.Homebrew
+	GhRelease []ghrelease.GhRelease
 }
 
 func (c *Config) parse() {

@@ -1,11 +1,7 @@
 package homebrew
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
-	"io"
-	"net/http"
 	"path"
 )
 
@@ -28,17 +24,4 @@ func (h *Homebrew) Execute() error {
 	}
 
 	return nil
-}
-
-func (h *Homebrew) buildURLHash(url string) (string, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	hasher := sha256.New()
-	io.Copy(hasher, resp.Body)
-
-	return hex.EncodeToString(hasher.Sum(nil)), nil
 }
