@@ -32,6 +32,7 @@ func runGhRelease(cmd *cobra.Command, args []string) {
 		task.Defaults()
 		if err := task.Execute(); err != nil {
 			logrus.Error(err)
+			os.Exit(1)
 		}
 	}
 }

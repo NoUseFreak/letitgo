@@ -6,9 +6,12 @@ import (
 	"errors"
 	"io"
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 )
 
 func (h *Homebrew) buildURLHash(url string) (string, error) {
+	logrus.Tracef("Downloading %s", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		return "", err
