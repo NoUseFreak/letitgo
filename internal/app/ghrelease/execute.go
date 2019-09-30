@@ -64,6 +64,7 @@ func (r *GhRelease) createRelease(ctx context.Context, client *github.Client) in
 }
 
 func (r *GhRelease) uploadAsset(ctx context.Context, client *github.Client, rID int64, path string) {
+	logrus.Tracef("Uploading %s", path)
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)

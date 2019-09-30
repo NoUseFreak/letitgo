@@ -2,6 +2,8 @@ package ghrelease
 
 import (
 	"path/filepath"
+
+	"github.com/sirupsen/logrus"
 )
 
 type GhRelease struct {
@@ -22,5 +24,7 @@ func (a GhReleaseAsset) GetFiles() []string {
 	if err != nil {
 		panic(err)
 	}
+	logrus.WithField("files", m).Trace("Found files")
+
 	return m
 }
