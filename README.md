@@ -10,7 +10,63 @@
 LetItGo simplifies automated releases. A simple definition in `.release.yml` in 
 the root of your project is all you need.
 
+
+## Install
+
+__Homebrew__
+
+```bash
+brew install NoUseFreak/brew/letitgo
+letitgo --version
+```
+
+__CLI__
+
+```bash
+curl -sL http://bit.ly/gh-get | PROJECT=NoUseFreak/letitgo bash
+letitgo --version
+```
+
+__docker__
+
+```bash
+docker run -v $(pwd):/app nousefreak/letitgo --version
+```
+
+__anywhere__
+
+```bash
+curl -sL http://bit.ly/gh-get | BIN_DIR=/tmp/bin PROJECT=NoUseFreak/letitgo bash
+/tmp/bin/letitgo --version
+```
+
+## Usage
+
+The most common use case would be to provide a `.release.yml` file in the root
+of your project, and let `letitgo` do it's thing.
+
+```bash
+$ letitgo $(git describe --tags --abbrev=0)
+```
+
+
 ## Actions
+
+### Github release
+
+Publish your artifacts as a github release. It will make on it it does not exist
+and publish all files matching the `assets` rules.
+
+```yaml
+githubrelease:
+  - title: "{{ .Version }}"
+    description: "{{ .Version }}"
+    version: "{{ .Version }}"
+    assets:
+      - build/*
+    owner: NoUseFreak
+    repo: lig-test
+```
 
 ### Homebrew
 
@@ -29,8 +85,4 @@ homebrew:
     tap:
       url: git@github.com:NoUseFreak/homebrew-brew.git
     test: system "#{bin}/{{ .Name }} -h"
-```
-
-```bash
-$ letitgo homebrew $(git describe --tags --abbrev=0)
 ```
