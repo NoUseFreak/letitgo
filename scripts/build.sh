@@ -22,12 +22,12 @@ mkdir -p build/{bin,pkg}
 
 if ! which gox > /dev/null; then
     echo "==> Installing gox..."
-    go get -u github.com/mitchellh/gox
+    (cd /tmp && go get -u github.com/mitchellh/gox)
 fi
 
 if ! which vembed > /dev/null; then
     echo "==> Installing vembed..."
-    go get -u github.com/NoUseFreak/go-vembed/vembed
+    (cd /tmp && go get -u github.com/NoUseFreak/go-vembed/vembed)
 fi
 
 # Instruct gox to build statically linked binaries
