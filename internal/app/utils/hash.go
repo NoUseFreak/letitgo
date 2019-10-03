@@ -1,18 +1,23 @@
-package homebrew
+package utils
 
 import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"hash"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/sirupsen/logrus"
 )
 
-func (h *Homebrew) buildURLHash(url string) (string, error) {
+func BuildURLHash(alg, url string) (string, error) {
 	logrus.Tracef("Downloading %s", url)
-	resp, err := http.Get(url)
+	client := http.Client{
+		Timeout: 10 * time.Second,
+	}
+	resp, err := client.Get(url)
 	if err != nil {
 		return "", err
 	}
@@ -22,7 +27,15 @@ func (h *Homebrew) buildURLHash(url string) (string, error) {
 		return "", errors.New("Not found")
 	}
 
-	hasher := sha256.New()
+	var hasher hash.Hash
+
+	switch alg {
+	case "sha256":
+		hasher = sha256.New()
+	default:
+		return "", errors.New("Unknown hashing algorithm")
+	}
+
 	io.Copy(hasher, resp.Body)
 
 	return hex.EncodeToString(hasher.Sum(nil)), nil

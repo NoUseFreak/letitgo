@@ -14,6 +14,7 @@ require (
 	github.com/imdario/mergo v0.3.7 // indirect
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.5
+	github.com/whilp/git-urls v0.0.0-20191001220047-6db9661140c0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
-	gopkg.in/yaml.v2 v2.2.2
+	gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0
 )

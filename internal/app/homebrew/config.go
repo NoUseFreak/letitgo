@@ -1,6 +1,6 @@
 package homebrew
 
-type Homebrew struct {
+type Config struct {
 	Name        string
 	Description string
 	Homepage    string
@@ -11,16 +11,16 @@ type Homebrew struct {
 	Dependencies []string
 	Conflicts    []string
 
-	Tap     HomebrewTap
+	Tap     HomebrewTapConfig
 	Folder  string
 	Install string
 	Test    string
 
-	// Calculated
+	// internal
 	Hash string
 }
 
-type HomebrewTap struct {
+type HomebrewTapConfig struct {
 	URL         string
 	AuthorName  string
 	AuthorEmail string

@@ -9,7 +9,4 @@ DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 
 cd "$DIR"
 
-curl -sL http://bit.ly/gh-get | PROJECT=NoUseFreak/letitgo bash
-
-letitgo ghrelease $(git describe --tags --abbrev=0)
-letitgo homebrew $(git describe --tags --abbrev=0)
+go run cmd/letitgo/main.go $(git describe --tags --abbrev=0)

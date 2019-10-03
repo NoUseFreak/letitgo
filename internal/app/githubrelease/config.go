@@ -1,4 +1,4 @@
-package ghrelease
+package githubrelease
 
 import (
 	"path/filepath"
@@ -6,7 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type GhRelease struct {
+type Config struct {
 	Owner string
 	Repo  string
 
@@ -14,12 +14,12 @@ type GhRelease struct {
 	Description string
 	Version     string
 
-	Assets []GhReleaseAsset
+	Assets []GhReleaseAssetConfig
 }
 
-type GhReleaseAsset string
+type GhReleaseAssetConfig string
 
-func (a GhReleaseAsset) GetFiles() []string {
+func (a GhReleaseAssetConfig) GetFiles() []string {
 	m, err := filepath.Glob(string(a))
 	if err != nil {
 		panic(err)

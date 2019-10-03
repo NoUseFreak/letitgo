@@ -1,27 +1,27 @@
-package ghrelease
+package githubrelease
 
 import (
 	"reflect"
 	"testing"
 )
 
-func TestGhReleaseAsset_GetFiles(t *testing.T) {
+func TestGhReleaseAssetConfig_GetFiles(t *testing.T) {
 	root := "../../../"
 	tests := []struct {
 		name string
-		a    GhReleaseAsset
+		a    GhReleaseAssetConfig
 		want []string
 	}{
 		{
 			name: "Find single",
-			a:    GhReleaseAsset(root + "test/assets/1.txt"),
+			a:    GhReleaseAssetConfig(root + "test/assets/1.txt"),
 			want: []string{
 				root + "test/assets/1.txt",
 			},
 		},
 		{
 			name: "Find glob",
-			a:    GhReleaseAsset(root + "test/assets/folder/*"),
+			a:    GhReleaseAssetConfig(root + "test/assets/folder/*"),
 			want: []string{
 				root + "test/assets/folder/2.txt",
 				root + "test/assets/folder/3.txt",
