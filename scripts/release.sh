@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#
-# This script update homebrew tap
+
+set -e 
 
 # Get the parent directory of where this script is.
 SOURCE="${BASH_SOURCE[0]}"

@@ -11,3 +11,5 @@ githubrelease:
     repo: letitgo
     assets:
       - ./build/pkg/*
+changelog:
+  - file: CHANGELOG.md

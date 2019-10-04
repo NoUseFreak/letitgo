@@ -13,6 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 	giturls "github.com/whilp/git-urls"
 	"golang.org/x/oauth2"
+	"gopkg.in/src-d/go-git.v4"
 )
 
 func Run(args ...string) (string, error) {
@@ -50,7 +51,7 @@ func publishFileGithub(url *url.URL, path, content, message string) error {
 		return errors.New("Make sure to set GITHUB_TOKEN")
 	}
 
-	owner := filepath.Dir(url.Path)
+	owner := strings.ReplaceAll(filepath.Dir(url.Path), "/", "")
 	basename := filepath.Base(url.Path)
 	repo := strings.TrimSuffix(basename, filepath.Ext(basename))
 
@@ -86,4 +87,22 @@ func publishFileGithub(url *url.URL, path, content, message string) error {
 	)
 
 	return err
+}
+
+func GetRemote(dir string) (string, error) {
+	repo, err := git.PlainOpen(dir)
+	if err != nil {
+		return "", err
+	}
+
+	remotes, err := repo.Remotes()
+	if err != nil {
+		return "", err
+	}
+
+	if len(remotes) > 1 {
+		return "", errors.New("Can't resolve remote")
+	}
+
+	return remotes[0].Config().URLs[0], nil
 }
