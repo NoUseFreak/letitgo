@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.12 (October 4, 2019)
+
+- Don't publish if changes are the same (3f9ef8af)
+
+
 ## 0.1.11 (October 4, 2019)
 
 - Add changelog
