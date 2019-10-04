@@ -71,6 +71,12 @@ func publishFileGithub(url *url.URL, path, content, message string) error {
 		nil,
 	)
 	if err == nil {
+		if oldContent, err := fileContent.GetContent(); err == nil {
+			if oldContent == content {
+				logrus.Infof("No changes to %s", path)
+				return nil
+			}
+		}
 		sha = fileContent.GetSHA()
 	}
 

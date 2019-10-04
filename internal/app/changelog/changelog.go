@@ -21,7 +21,17 @@ func Execute(c Config) error {
 		c.Message = "Update changelog"
 	}
 
-	tree, err := buildReleaseBlocks()
+	r, err := git.PlainOpen(".")
+	if err != nil {
+		return err
+	}
+
+	if lastCommitIsChangelog(r, c.Message, c.File) {
+		logrus.Info("Skipping changelog")
+		return nil
+	}
+
+	tree, err := buildReleaseBlocks(r, []string{c.Message})
 	if err != nil {
 		return err
 	}
@@ -45,12 +55,7 @@ func Execute(c Config) error {
 	return utils.PublishFile(repo, c.File, out, c.Message)
 }
 
-func buildReleaseBlocks() (*[]ReleaseBlock, error) {
-	repo, err := git.PlainOpen(".")
-	if err != nil {
-		return nil, err
-	}
-
+func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]ReleaseBlock, error) {
 	ref, err := repo.Head()
 	if err != nil {
 		return nil, err
@@ -86,6 +91,11 @@ func buildReleaseBlocks() (*[]ReleaseBlock, error) {
 				Commits: []*object.Commit{},
 			})
 		}
+		for _, ig := range ignore {
+			if ig == c.Message {
+				return nil
+			}
+		}
 		tree[last].Commits = append(tree[last].Commits, c)
 		return nil
 	})
@@ -111,4 +121,21 @@ func templateChangelog(vars interface{}) (string, error) {
 	}
 
 	return out.String(), nil
+}
+
+func lastCommitIsChangelog(r *git.Repository, msg, file string) bool {
+	ref, err := r.Head()
+	if err != nil {
+		return false
+	}
+	commit, err := r.CommitObject(ref.Hash())
+	if err != nil {
+		return false
+	}
+
+	if f, _ := commit.File(file); f == nil {
+		return false
+	}
+
+	return commit.Message == msg
 }

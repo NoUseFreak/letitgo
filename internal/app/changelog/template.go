@@ -9,7 +9,7 @@ var changelogTpl = `# Changelog
 `
 
 var blockTpl = `
-## {{ .Tag | trim }} ({{ if .Date }}{{ .Date | date "January 2, 2006" }}{{ else }}Unreleased{{ end }})
+## {{ .Tag | trim }} ({{ if .Date }}{{ dateInZone "January 2, 2006" .Date "UTC" }}{{ else }}Unreleased{{ end }})
 {{ range .Commits }}
 - {{ .Message | trim }} ({{ trunc 8 .Hash.String }})
 {{- end }}
