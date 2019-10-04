@@ -19,7 +19,7 @@ func Execute(c Config) error {
 		c.File = "CHANGELOG.md"
 	}
 	if c.Message == "" {
-		c.Message = "Update changelog"
+		c.Message = "Update changelog\n[skip ci]"
 	}
 
 	r, err := git.PlainOpen(".")
