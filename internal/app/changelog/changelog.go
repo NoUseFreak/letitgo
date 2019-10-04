@@ -2,6 +2,7 @@ package changelog
 
 import (
 	"bytes"
+	"strings"
 	"text/template"
 	"time"
 
@@ -51,6 +52,8 @@ func Execute(c Config) error {
 		return err
 	}
 
+	logrus.Trace(out)
+
 	logrus.Infof("Publishing %s", c.File)
 	return utils.PublishFile(repo, c.File, out, c.Message)
 }
@@ -76,7 +79,7 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]ReleaseBlock,
 	tree := []ReleaseBlock{
 		{
 			Tag:     "unreleased",
-			Commits: []*object.Commit{},
+			Commits: []Commit{},
 		},
 	}
 	last := 0
@@ -88,7 +91,7 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]ReleaseBlock,
 				Tag:     tag.Name().Short(),
 				Date:    &c.Committer.When,
 				Ref:     tag,
-				Commits: []*object.Commit{},
+				Commits: []Commit{},
 			})
 		}
 		for _, ig := range ignore {
@@ -96,18 +99,34 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]ReleaseBlock,
 				return nil
 			}
 		}
-		tree[last].Commits = append(tree[last].Commits, c)
+		tree[last].Commits = append(tree[last].Commits, newCommit(c))
 		return nil
 	})
 
 	return &tree, err
 }
 
+func newCommit(c *object.Commit) Commit {
+	commit := Commit{
+		Message:      c.Message,
+		MessageShort: strings.Split(utils.NormalizeNewlines(c.Message), "\n")[0],
+		Hash:         c.Hash.String(),
+	}
+
+	return commit
+}
+
 type ReleaseBlock struct {
 	Tag     string
 	Date    *time.Time
 	Ref     *plumbing.Reference
-	Commits []*object.Commit
+	Commits []Commit
+}
+
+type Commit struct {
+	Message      string
+	MessageShort string
+	Hash         string
 }
 
 func templateChangelog(vars interface{}) (string, error) {
