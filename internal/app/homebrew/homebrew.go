@@ -24,8 +24,13 @@ func Execute(c Config) error {
 
 	logrus.Trace(content)
 
-	filename := path.Join(c.Folder, fmt.Sprintf("%s.rb", c.Name))
-	message := fmt.Sprintf("Upgrade %s to %s", c.Name, c.Version())
+	name := c.Name
+	if name == "" {
+		name = c.LetItGo.Name
+	}
+
+	filename := path.Join(c.Folder, fmt.Sprintf("%s.rb", name))
+	message := fmt.Sprintf("Upgrade %s to %s", name, c.Version())
 
 	return utils.PublishFile(c.Tap.URL, filename, content, message)
 }
