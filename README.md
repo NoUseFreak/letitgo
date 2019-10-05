@@ -27,13 +27,13 @@ curl -sL http://bit.ly/gh-get | PROJECT=NoUseFreak/letitgo bash
 letitgo --version
 ```
 
-__docker__
+__Docker__
 
 ```bash
 docker run -v $(pwd):/app nousefreak/letitgo --version
 ```
 
-__anywhere__
+__Anywhere__
 
 ```bash
 curl -sL http://bit.ly/gh-get | BIN_DIR=/tmp/bin PROJECT=NoUseFreak/letitgo bash
