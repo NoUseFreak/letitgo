@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.14 (October 5, 2019)
+
+- Fix homebrew naming
+- Fix homebrew filename
+
+
 ## 0.1.13 (October 5, 2019)
 
 - Group and default to main config
