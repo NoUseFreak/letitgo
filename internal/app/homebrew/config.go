@@ -1,12 +1,15 @@
 package homebrew
 
+import "github.com/NoUseFreak/letitgo/internal/app/config"
+
 type Config struct {
+	config.BaseConfig
+
 	Name        string
 	Description string
 	Homepage    string
 
-	URL     string
-	Version string
+	URL string
 
 	Dependencies []string
 	Conflicts    []string
@@ -17,8 +20,10 @@ type Config struct {
 	Test    string
 
 	// internal
-	Hash string
+	hash string
 }
+
+func (c *Config) Hash() string { return c.hash }
 
 type HomebrewTapConfig struct {
 	URL         string

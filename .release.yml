@@ -1,15 +1,17 @@
-name: letitgo
-description: LetItGo automates releases.
+letitgo:
+  name: letitgo
+  description: LetItGo automates releases.
+
+changelog:
+  - file: CHANGELOG.md
+
+githubrelease:
+  - assets:
+      - ./build/pkg/*
+
 homebrew:
   - homepage: https://github.com/NoUseFreak/letitgo
     url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/darwin_amd64.zip
     tap:
       url: git@github.com:NoUseFreak/homebrew-brew.git
     test: system "#{bin}/{{ .Name }} -h"
-githubrelease:
-  - owner: NoUseFreak
-    repo: letitgo
-    assets:
-      - ./build/pkg/*
-changelog:
-  - file: CHANGELOG.md

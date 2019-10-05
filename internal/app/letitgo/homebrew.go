@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterAction(new(HomebrewAction))
+	registerAction(new(HomebrewAction))
 }
 
 type HomebrewAction struct{}
@@ -16,9 +16,7 @@ func (a *HomebrewAction) Weight() int {
 
 func (a *HomebrewAction) Execute(cfg Config) error {
 	for _, spec := range cfg.Homebrew {
-		spec.Name = cfg.Name
-		spec.Version = cfg.Version
-		spec.Description = cfg.Description
+		spec.LetItGo = cfg.LetItGo
 		if err := homebrew.Execute(spec); err != nil {
 			return err
 		}

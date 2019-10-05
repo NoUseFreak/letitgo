@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterAction(new(GithubReleaseAction))
+	registerAction(new(GithubReleaseAction))
 }
 
 type GithubReleaseAction struct{}
@@ -16,8 +16,7 @@ func (a *GithubReleaseAction) Weight() int {
 
 func (a *GithubReleaseAction) Execute(cfg Config) error {
 	for _, spec := range cfg.GithubRelease {
-		spec.Description = cfg.Description
-		spec.Version = cfg.Version
+		spec.LetItGo = cfg.LetItGo
 		if err := githubrelease.Execute(spec); err != nil {
 			return err
 		}

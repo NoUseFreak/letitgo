@@ -14,6 +14,11 @@ import (
 
 func Execute(c Config) error {
 	templateProps(&c)
+
+	if c.Owner == "" || c.Repo == "" {
+		resolveOwnerRepo(&c)
+	}
+
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 		return errors.New("Make sure to set GITHUB_TOKEN")
@@ -48,7 +53,8 @@ func ghClient(ctx context.Context, token string) *github.Client {
 }
 
 func createRelease(ctx context.Context, client *github.Client, c Config) (int64, error) {
-	release, _, err := client.Repositories.GetReleaseByTag(ctx, c.Owner, c.Repo, c.Version)
+	version := c.BaseConfig.LetItGo.Version()
+	release, _, err := client.Repositories.GetReleaseByTag(ctx, c.Owner, c.Repo, version)
 	if release != nil && err == nil {
 		logrus.Debug("Release exists")
 		return release.GetID(), nil
@@ -56,7 +62,7 @@ func createRelease(ctx context.Context, client *github.Client, c Config) (int64,
 
 	logrus.Debug("Creating release")
 	release, _, err = client.Repositories.CreateRelease(ctx, c.Owner, c.Repo, &github.RepositoryRelease{
-		TagName: &c.Version,
+		TagName: &version,
 		Name:    &c.Title,
 		Body:    &c.Description,
 	})
@@ -86,4 +92,21 @@ func uploadAsset(ctx context.Context, client *github.Client, rID int64, path str
 func templateProps(c *Config) {
 	utils.TemplateProperty(&c.Title, c)
 	utils.TemplateProperty(&c.Description, c)
+}
+
+func resolveOwnerRepo(c *Config) error {
+	repo, err := utils.GetRemote(".")
+	if err != nil {
+		return err
+	}
+
+	uri, err := utils.ParseURI(repo)
+	if err != nil {
+		return err
+	}
+
+	c.Owner = uri.Owner
+	c.Repo = uri.Repo
+
+	return nil
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -31,8 +32,8 @@ func Execute() {
 
 func runRoot(cmd *cobra.Command, args []string) {
 	cfg := Config{}
+	cfg.LetItGo = config.NewConfig(args[0])
 	utils.ParseYamlFile(".release.yml", &cfg)
-	cfg.Version = args[0]
 	if err := RunAll(cfg); err != nil {
 		logrus.Error(err)
 		os.Exit(1)

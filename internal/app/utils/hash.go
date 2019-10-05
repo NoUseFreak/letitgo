@@ -16,7 +16,7 @@ import (
 func BuildURLHash(alg, url string) (string, error) {
 	logrus.Tracef("Downloading %s", url)
 	client := http.Client{
-		Timeout: 10 * time.Second,
+		Timeout: 30 * time.Second,
 	}
 	resp, err := client.Get(url)
 	if err != nil {

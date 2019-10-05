@@ -3,16 +3,18 @@ package githubrelease
 import (
 	"path/filepath"
 
+	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/sirupsen/logrus"
 )
 
 type Config struct {
+	config.BaseConfig
+
 	Owner string
 	Repo  string
 
 	Title       string
 	Description string
-	Version     string
 
 	Assets []GhReleaseAssetConfig
 }

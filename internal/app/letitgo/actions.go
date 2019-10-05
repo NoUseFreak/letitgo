@@ -18,7 +18,7 @@ type Action interface {
 	Execute(Config) error
 }
 
-func RegisterAction(a Action) {
+func registerAction(a Action) {
 	actions = append(actions, a)
 }
 

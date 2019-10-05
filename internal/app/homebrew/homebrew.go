@@ -5,6 +5,7 @@ import (
 	"path"
 
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	"github.com/sirupsen/logrus"
 )
 
 func Execute(c Config) error {
@@ -14,15 +15,17 @@ func Execute(c Config) error {
 	if err != nil {
 		return err
 	}
-	c.Hash = hash
+	c.hash = hash
 
-	content, err := utils.Template(homebrewTpl, c)
+	content, err := utils.Template(homebrewTpl, &c)
 	if err != nil {
 		return err
 	}
 
+	logrus.Trace(content)
+
 	filename := path.Join(c.Folder, fmt.Sprintf("%s.rb", c.Name))
-	message := fmt.Sprintf("Upgrade %s to %s", c.Name, c.Version)
+	message := fmt.Sprintf("Upgrade %s to %s", c.Name, c.Version())
 
 	return utils.PublishFile(c.Tap.URL, filename, content, message)
 }
