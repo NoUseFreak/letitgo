@@ -40,7 +40,7 @@ func setDefaults(c *Config) {
 		c.Folder = "Formula"
 	}
 	if c.Install == "" {
-		c.Install = "bin.install \"{{ .Name }}\""
+		c.Install = "bin.install \"{{ default .LetItGo.Name .Name }}\""
 	}
 }
 
