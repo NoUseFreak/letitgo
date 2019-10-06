@@ -11,3 +11,10 @@ func NormalizeNewlines(s string) string {
 
 	return string(d)
 }
+
+func DefaultString(v string, d string) string {
+	if v == "" {
+		return d
+	}
+	return v
+}

@@ -5,12 +5,14 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/githubrelease"
 	"github.com/NoUseFreak/letitgo/internal/app/homebrew"
+	"github.com/NoUseFreak/letitgo/internal/app/snapcraft"
 )
 
 type Config struct {
 	LetItGo config.LetItGoConfig
 
-	Homebrew      []homebrew.Config
-	GithubRelease []githubrelease.Config
 	Changelog     []changelog.Config
+	GithubRelease []githubrelease.Config
+	Homebrew      []homebrew.Config
+	Snapcraft     []snapcraft.Config
 }
