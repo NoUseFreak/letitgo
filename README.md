@@ -52,6 +52,11 @@ $ letitgo $(git describe --tags --abbrev=0)
 
 ## Actions
 
+Actions as as the name explains, actions that letitgo need to execture when
+the release process is triggered.
+
+Listed are some examples, all available actions are in the [docs](docs/).
+
 ### Github release
 
 Publish your artifacts as a github release. It will make on it it does not exist
