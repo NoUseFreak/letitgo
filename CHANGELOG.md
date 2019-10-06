@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0 (October 6, 2019)
+
+- Implement snapcraft
+
+
 ## 0.1.14 (October 5, 2019)
 
 - Fix homebrew naming
