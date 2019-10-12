@@ -14,12 +14,12 @@ var rootCmd = &cobra.Command{
 	Use:   "letitgo <version>",
 	Short: "LetItGo Release helper",
 	Long:  `LetItGo release helper`,
-	Args:  cobra.ExactArgs(1),
+	Args:  cobra.RangeArgs(0, 1),
 	Run:   runRoot,
 }
 
 func init() {
-	logrus.SetLevel(logrus.TraceLevel)
+	logrus.SetLevel(logrus.InfoLevel)
 }
 
 // Execute runs the cli application.
@@ -31,11 +31,28 @@ func Execute() {
 }
 
 func runRoot(cmd *cobra.Command, args []string) {
+	version := getVersion(args)
+	logrus.Debugf("Going to work with version '%s'", version)
+
 	cfg := Config{}
-	cfg.LetItGo = config.NewConfig(args[0])
+	cfg.LetItGo = config.NewConfig(version)
 	utils.ParseYamlFile(".release.yml", &cfg)
 	if err := RunAll(cfg); err != nil {
 		logrus.Error(err)
 		os.Exit(1)
 	}
+}
+
+func getVersion(args []string) string {
+	if len(args) == 1 {
+		return args[0]
+	}
+
+	v, err := utils.Run("describe", "--tags", "--abbrev", "0")
+	if err != nil {
+		logrus.Error("Could not find an exact tag.")
+		os.Exit(0)
+	}
+
+	return v
 }
