@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/Masterminds/sprig"
+	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
-	"github.com/sirupsen/logrus"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
@@ -28,7 +28,7 @@ func Execute(c Config) error {
 	}
 
 	if lastCommitIsChangelog(r, c.Message, c.File) {
-		logrus.Info("Skipping changelog")
+		ui.Info("Skipping changelog")
 		return nil
 	}
 
@@ -52,9 +52,9 @@ func Execute(c Config) error {
 		return err
 	}
 
-	logrus.Trace(out)
+	ui.Trace(out)
 
-	logrus.Infof("Publishing %s", c.File)
+	ui.Step("Publishing %s", c.File)
 	return utils.PublishFile(repo, c.File, out, c.Message)
 }
 

@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"path"
 
+	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
-	"github.com/sirupsen/logrus"
 )
 
 func Execute(c Config) error {
+	ui.Step("Releasing homebrew")
 	setDefaults(&c)
 	templateProps(&c)
 	hash, err := utils.BuildURLHash("sha256", c.URL)
@@ -22,7 +23,7 @@ func Execute(c Config) error {
 		return err
 	}
 
-	logrus.Trace(content)
+	ui.Trace(content)
 
 	name := c.Name
 	if name == "" {

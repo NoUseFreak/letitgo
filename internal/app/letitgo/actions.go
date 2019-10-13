@@ -3,6 +3,8 @@ package letitgo
 import (
 	"sort"
 
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
+	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/sirupsen/logrus"
 )
 
@@ -27,7 +29,12 @@ func RunAll(cfg Config) error {
 	for _, a := range actions {
 		logrus.Tracef("Running %T", a)
 		if err := a.Execute(cfg); err != nil {
-			return err
+			switch er := err.(type) {
+			case *e.SkipError:
+				ui.Warn("Skipping because of %s", er.Reason)
+			default:
+				return err
+			}
 		}
 	}
 

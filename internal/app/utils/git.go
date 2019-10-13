@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	"github.com/google/go-github/github"
 	"github.com/sirupsen/logrus"
 	giturls "github.com/whilp/git-urls"
@@ -46,6 +47,10 @@ func PublishFile(repoURL, path, content, message string) error {
 }
 
 func publishFileGithub(url *url.URL, path, content, message string) error {
+	if DryRun {
+		return &e.SkipError{"dryrun"}
+	}
+
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 		return errors.New("Make sure to set GITHUB_TOKEN")

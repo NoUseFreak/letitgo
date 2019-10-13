@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/NoUseFreak/letitgo/internal/app/config"
+	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -20,6 +21,7 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	logrus.SetLevel(logrus.InfoLevel)
+	rootCmd.PersistentFlags().BoolVarP(&utils.DryRun, "dry-run", "d", false, "Enable dry-run")
 }
 
 // Execute runs the cli application.
@@ -31,14 +33,15 @@ func Execute() {
 }
 
 func runRoot(cmd *cobra.Command, args []string) {
+	ui.Phase("LetItGo")
 	version := getVersion(args)
-	logrus.Debugf("Going to work with version '%s'", version)
+	ui.Debug("Going to work with version '%s'", version)
 
 	cfg := Config{}
 	cfg.LetItGo = config.NewConfig(version)
 	utils.ParseYamlFile(".release.yml", &cfg)
 	if err := RunAll(cfg); err != nil {
-		logrus.Error(err)
+		ui.Error(err.Error())
 		os.Exit(1)
 	}
 }
@@ -50,7 +53,7 @@ func getVersion(args []string) string {
 
 	v, err := utils.Run("describe", "--tags", "--abbrev", "0")
 	if err != nil {
-		logrus.Error("Could not find an exact tag.")
+		ui.Error("Could not find an exact tag.")
 		os.Exit(0)
 	}
 
