@@ -16,3 +16,9 @@ homebrew:
     tap:
       url: git@github.com:NoUseFreak/homebrew-brew.git
     test: system "#{bin}/{{ .Name }} -h"
+
+helm:
+  - charts:
+      - ./test/test-chart
+    builddir: build/helm/
+    repository: https://chartmuseum.nousefreak.be

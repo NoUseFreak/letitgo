@@ -4,6 +4,7 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/changelog"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/githubrelease"
+	"github.com/NoUseFreak/letitgo/internal/app/helm"
 	"github.com/NoUseFreak/letitgo/internal/app/homebrew"
 	"github.com/NoUseFreak/letitgo/internal/app/snapcraft"
 )
@@ -15,4 +16,5 @@ type Config struct {
 	GithubRelease []githubrelease.Config
 	Homebrew      []homebrew.Config
 	Snapcraft     []snapcraft.Config
+	Helm          []helm.Config
 }
