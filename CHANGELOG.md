@@ -1,7 +1,12 @@
 # Changelog
 
-## 0.2.0 (October 6, 2019)
+## 0.2.1 (October 14, 2019)
 
+- Make output pretty
+- Implement dryRun
+- Try to find version from git
+- Add link to all actions
+- Add snapcraft doc
 - Implement snapcraft
 
 
