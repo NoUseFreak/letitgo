@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0 (October 14, 2019)
+
+- Add helm package and publish support
+- Add updated example
+
+
 ## 0.2.1 (October 14, 2019)
 
 - Make output pretty
