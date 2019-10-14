@@ -1,13 +1,18 @@
+letitgo:
+  name: sawsh
+  description: SSH wrapper for aws to make your life easier.
+
+changelog:
+  - file: CHANGELOG.md
+  
+githubrelease:
+  - assets:
+      - ./build/archive/*
+
 homebrew:
-  - name: gitteams
-    description: GitTeams gives you insight into multiple repositories at once.
-    homepage: https://github.com/NoUseFreak/gitteams
-    url: https://github.com/NoUseFreak/gitteams/releases/download/{{ .Version }}/darwin_amd64.zip
+  - homepage: https://github.com/NoUseFreak/sawsh
+    url: https://github.com/NoUseFreak/sawsh/releases/download/{{ .Version }}/darwin_amd64.zip
     version: "{{ .Version }}"
     tap:
       url: git@github.com:NoUseFreak/homebrew-brew.git
-      author_name: Dries De Peuter
-      author_email: dries@depeuter.io
-    folder: Formula
-    install: bin.install "gitteams"
-    test: system "#{bin}/gitteams -h"
+    test: system "#{bin}/{{ .Name }} -h"
