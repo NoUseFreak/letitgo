@@ -6,7 +6,7 @@ import (
 )
 
 func Execute(c Config) error {
-	ui.Step("Publishing releases")
+	ui.Phase("Publishing releases")
 
 	templateProps(&c)
 

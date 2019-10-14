@@ -3,8 +3,10 @@ package utils
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
@@ -20,10 +22,6 @@ type GithubClient struct {
 }
 
 func (c *GithubClient) init() error {
-	if DryRun {
-		return &e.SkipError{"dryrun"}
-	}
-
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 		return errors.New("Make sure to set GITHUB_TOKEN")
@@ -40,6 +38,7 @@ func (c *GithubClient) CreateRelease(version, title, description string) (int64,
 		return -1, err
 	}
 
+	ui.Step("Validating release")
 	release, _, err := c.client.Repositories.GetReleaseByTag(
 		c.ctx,
 		c.Owner,
@@ -51,7 +50,10 @@ func (c *GithubClient) CreateRelease(version, title, description string) (int64,
 		return release.GetID(), nil
 	}
 
-	ui.Debug("Creating release")
+	ui.Step("Creating release")
+	if DryRun {
+		return -1, nil
+	}
 	release, _, err = c.client.Repositories.CreateRelease(c.ctx, c.Owner, c.Repo, &github.RepositoryRelease{
 		TagName: &version,
 		Name:    &title,
@@ -69,15 +71,36 @@ func (c *GithubClient) UploadAssets(releaseID int64, assets []string) error {
 	if err := c.init(); err != nil {
 		return err
 	}
+	if DryRun {
+		return &e.SkipError{
+			Reason: "dryrun",
+			Part:   fmt.Sprintf("Upload assets %s", strings.Join(assets, ", ")),
+		}
+	}
 
 	for _, f := range assets {
-		ui.Debug("Uploading %s", f)
-		if err := c.uploadAsset(releaseID, f); err != nil {
+		if err := c.UploadAsset(releaseID, f); err != nil {
 			return err
 		}
 	}
 
 	return nil
+}
+
+func (c *GithubClient) UploadAsset(releaseID int64, asset string) error {
+	ui.Step("Uploading %s", asset)
+	if err := c.init(); err != nil {
+		return err
+	}
+	ui.Debug("Uploading %s", asset)
+	if DryRun {
+		return &e.SkipError{
+			Reason: "dryrun",
+			Part:   fmt.Sprintf("Upload asset %s", asset),
+		}
+	}
+
+	return c.uploadAsset(releaseID, asset)
 }
 
 func (c *GithubClient) ghClient(token string) *github.Client {

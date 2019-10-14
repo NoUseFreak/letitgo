@@ -5,7 +5,7 @@ import (
 
 	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
-	"github.com/sirupsen/logrus"
+	"github.com/fatih/color"
 )
 
 var actions = Actions{}
@@ -27,11 +27,11 @@ func registerAction(a Action) {
 func RunAll(cfg Config) error {
 	sort.Sort(ByWeight{actions})
 	for _, a := range actions {
-		logrus.Tracef("Running %T", a)
+		ui.Trace("Running %T", a)
 		if err := a.Execute(cfg); err != nil {
 			switch er := err.(type) {
 			case *e.SkipError:
-				ui.Warn("Skipping because of %s", er.Reason)
+				color.Yellow("  " + er.Error())
 			default:
 				return err
 			}

@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	e "github.com/NoUseFreak/letitgo/internal/app/errors"
+	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/google/go-github/github"
 	"github.com/sirupsen/logrus"
 	giturls "github.com/whilp/git-urls"
@@ -33,6 +34,7 @@ func Run(args ...string) (string, error) {
 }
 
 func PublishFile(repoURL, path, content, message string) error {
+	ui.Step("Publishing file")
 	url, err := giturls.Parse(repoURL)
 	if err != nil {
 		return err
@@ -48,7 +50,10 @@ func PublishFile(repoURL, path, content, message string) error {
 
 func publishFileGithub(url *url.URL, path, content, message string) error {
 	if DryRun {
-		return &e.SkipError{"dryrun"}
+		return &e.SkipError{
+			Part:   "Publish file to github",
+			Reason: "dryrun",
+		}
 	}
 
 	token := os.Getenv("GITHUB_TOKEN")

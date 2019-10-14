@@ -22,6 +22,16 @@ var rootCmd = &cobra.Command{
 func init() {
 	logrus.SetLevel(logrus.InfoLevel)
 	rootCmd.PersistentFlags().BoolVarP(&utils.DryRun, "dry-run", "d", false, "Enable dry-run")
+	rootCmd.PersistentFlags().String("loglevel", "info", "Log level")
+	rootCmd.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
+		lvlString, _ := cmd.PersistentFlags().GetString("loglevel")
+		lvl, err := logrus.ParseLevel(lvlString)
+		if err != nil {
+			return err
+		}
+		logrus.SetLevel(lvl)
+		return nil
+	}
 }
 
 // Execute runs the cli application.
@@ -33,7 +43,7 @@ func Execute() {
 }
 
 func runRoot(cmd *cobra.Command, args []string) {
-	ui.Phase("LetItGo")
+	ui.Title("LetItGo")
 	version := getVersion(args)
 	ui.Debug("Going to work with version '%s'", version)
 

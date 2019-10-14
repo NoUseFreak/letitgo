@@ -9,7 +9,7 @@ import (
 )
 
 func Execute(c Config) error {
-	ui.Step("Releasing homebrew")
+	ui.Phase("Releasing homebrew")
 	setDefaults(&c)
 	templateProps(&c)
 	hash, err := utils.BuildURLHash("sha256", c.URL)

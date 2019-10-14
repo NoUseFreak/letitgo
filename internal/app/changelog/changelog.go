@@ -54,7 +54,7 @@ func Execute(c Config) error {
 
 	ui.Trace(out)
 
-	ui.Step("Publishing %s", c.File)
+	ui.Phase("Publishing %s", c.File)
 	return utils.PublishFile(repo, c.File, out, c.Message)
 }
 

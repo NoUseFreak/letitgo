@@ -7,12 +7,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+func Title(format string, args ...interface{}) {
+	color.Blue(format+"\n", args...)
+}
+
 func Phase(format string, args ...interface{}) {
-	color.Blue("\n"+format, args...)
+	fmt.Printf("- "+format+"\n", args...)
 }
 
 func Step(format string, args ...interface{}) {
-	fmt.Printf("- "+format+"\n", args...)
+	color.Green("  "+format+"\n", args...)
 }
 
 func Trace(format string, args ...interface{}) {
@@ -32,7 +36,8 @@ func Warn(format string, args ...interface{}) {
 }
 
 func Error(format string, args ...interface{}) {
-	logrus.Errorf(format, args...)
+	color.Red(format, args...)
+	// logrus.Errorf(format, args...)
 }
 
 func Panic(format string, args ...interface{}) {
