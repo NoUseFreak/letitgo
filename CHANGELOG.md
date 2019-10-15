@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 (October 15, 2019)
+
+- Create init script
+- Cleaner output
+
+
 ## 0.3.0 (October 14, 2019)
 
 - Add helm package and publish support
