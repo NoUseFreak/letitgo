@@ -46,9 +46,15 @@ The most common use case would be to provide a `.release.yml` file in the root
 of your project, and let `letitgo` do it's thing.
 
 ```bash
-$ letitgo $(git describe --tags --abbrev=0)
+$ letitgo
 ```
 
+## Init
+
+You can use `letitgo init` to help you generate your `.release.yml` file.
+
+It will go through all available actions and provide you with an example for
+each of the actions. 
 
 ## Actions
 
