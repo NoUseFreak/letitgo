@@ -10,6 +10,22 @@ func init() {
 
 type GithubReleaseAction struct{}
 
+func (a *GithubReleaseAction) Name() string {
+	return "githubrelease"
+}
+
+func (a *GithubReleaseAction) GetInitConfig() map[string]interface{} {
+	return map[string]interface{}{
+		"assets": []string{"./build/*"},
+	}
+}
+
+func (a *GithubReleaseAction) GetDefaults() Config {
+	return Config{
+		GithubRelease: []githubrelease.Config{{}},
+	}
+}
+
 func (a *GithubReleaseAction) Weight() int {
 	return 10
 }

@@ -10,6 +10,25 @@ func init() {
 
 type SnapcraftAction struct{}
 
+func (a *SnapcraftAction) Name() string {
+	return "snapcraft"
+}
+
+func (a *SnapcraftAction) GetInitConfig() map[string]interface{} {
+	return map[string]interface{}{
+		"assets": []string{
+			"./build/bin/linux_amd64/letitgo",
+		},
+		"architecture": "amd64",
+	}
+}
+
+func (a *SnapcraftAction) GetDefaults() Config {
+	return Config{
+		Snapcraft: []snapcraft.Config{{}},
+	}
+}
+
 func (a *SnapcraftAction) Weight() int {
 	return 110
 }

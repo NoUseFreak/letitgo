@@ -16,6 +16,9 @@ func (s Actions) Len() int      { return len(s) }
 func (s Actions) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
 type Action interface {
+	Name() string
+	GetInitConfig() map[string]interface{}
+	GetDefaults() Config
 	Weight() int
 	Execute(Config) error
 }

@@ -10,6 +10,25 @@ func init() {
 
 type ChangelogAction struct{}
 
+func (a *ChangelogAction) Name() string {
+	return "changelog"
+}
+
+func (a *ChangelogAction) GetInitConfig() map[string]interface{} {
+	return map[string]interface{}{
+		"file": "CHANGELOG.md",
+	}
+}
+
+func (a *ChangelogAction) GetDefaults() Config {
+	return Config{
+		Changelog: []changelog.Config{{
+			File:    "CHANGELOG.md",
+			Message: "Update changelog\n[skip ci]",
+		}},
+	}
+}
+
 func (a *ChangelogAction) Weight() int {
 	return 5
 }

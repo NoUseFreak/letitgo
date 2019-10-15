@@ -8,6 +8,24 @@ func init() {
 
 type HelmAction struct{}
 
+func (a *HelmAction) Name() string {
+	return "helm"
+}
+
+func (a *HelmAction) GetInitConfig() map[string]interface{} {
+	return map[string]interface{}{
+		"charts":     []string{"./charts/my-chart"},
+		"builddir":   "./build/helm",
+		"repository": "https://chartmuseum.example.com",
+	}
+}
+
+func (a *HelmAction) GetDefaults() Config {
+	return Config{
+		Helm: []helm.Config{{}},
+	}
+}
+
 func (a *HelmAction) Weight() int {
 	return 120
 }

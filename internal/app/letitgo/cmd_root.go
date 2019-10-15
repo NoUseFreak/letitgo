@@ -26,10 +26,9 @@ func init() {
 	rootCmd.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
 		lvlString, _ := cmd.PersistentFlags().GetString("loglevel")
 		lvl, err := logrus.ParseLevel(lvlString)
-		if err != nil {
-			return err
+		if err == nil {
+			logrus.SetLevel(lvl)
 		}
-		logrus.SetLevel(lvl)
 		return nil
 	}
 }
