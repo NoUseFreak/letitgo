@@ -1,5 +1,8 @@
 # Homebrew
 
+Currently it is only supported to update [Taps](https://docs.brew.sh/Taps).
+It requires `GITHUB_TOKEN` to be set. 
+
 ## Prerequisites
 
 - Requires `GITHUB_TOKEN` to be set in the environment.
@@ -20,6 +23,8 @@ Parameter | Description | Default
 `test` | Test action | ""
 
 ### Example
+
+The following example configuration will update `Formula/letitgo.rb`.
 
 ```yaml
 homebrew:

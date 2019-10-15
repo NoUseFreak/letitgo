@@ -1,5 +1,8 @@
 # Github Release
 
+Publish your artifacts as a github release. It will make on it it does not exist
+and publish all files matching the `assets` rules.
+
 ## Prerequisites
 
 - Requires `GITHUB_TOKEN` to be set in the environment.

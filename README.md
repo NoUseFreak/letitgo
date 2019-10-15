@@ -58,41 +58,38 @@ each of the actions.
 
 ## Actions
 
-Actions as as the name explains, actions that letitgo need to execture when
+Actions as as the name explains, actions that letitgo need to execute when
 the release process is triggered.
 
-Listed are some examples, all available actions are in the [docs](docs/).
+Action | Description
+--- | ---
+changelog | Generate a changelog and commit it to your project.
+githubrelease | Publish generated artifacts and attach them to a github release.
+helm | Package and/or publish helm charts to a registry like chartmuseum.
+homebrew | Update your personal homebrew tap with your latest config.
+snapcraft | Package and upload your snap to snapcraft.
 
-### Github release
+All actions and example configuration can be found in the [docs directory](docs/).
 
-Publish your artifacts as a github release. It will make on it it does not exist
-and publish all files matching the `assets` rules.
+## Example
 
-```yaml
-githubrelease:
-  - title: "{{ .Version }}"
-    description: "{{ .Version }}"
-    version: "{{ .Version }}"
-    assets:
-      - build/*
-    owner: NoUseFreak
-    repo: lig-test
+The following is an example config used to release this project.
+
 ```
+letitgo:
+  name: letitgo
+  description: LetItGo automates releases.
 
-### Homebrew
+changelog:
+  - file: CHANGELOG.md
 
-Currently it is only supported to update [Taps](https://docs.brew.sh/Taps).
-It requires `GITHUB_TOKEN` to be set. 
+githubrelease:
+  - assets:
+      - ./build/pkg/*
 
-The following example configuration will update `Formula/letitgo.rb`.
-
-```yaml
 homebrew:
-  - name: letitgo
-    description: LetItGo automates releases.
-    homepage: https://github.com/NoUseFreak/letitgo
+  - homepage: https://github.com/NoUseFreak/letitgo
     url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/darwin_amd64.zip
-    version: "{{ .Version }}"
     tap:
       url: git@github.com:NoUseFreak/homebrew-brew.git
     test: system "#{bin}/{{ .Name }} -h"
