@@ -1,6 +1,7 @@
 package letitgo
 
 import (
+	"github.com/NoUseFreak/letitgo/internal/app/archive"
 	"github.com/NoUseFreak/letitgo/internal/app/changelog"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/githubrelease"
@@ -15,6 +16,7 @@ func init() {
 	registerAction(new(helm.Action))
 	registerAction(new(homebrew.Action))
 	registerAction(new(snapcraft.Action))
+	registerAction(new(archive.Action))
 }
 
 var letItGoActions = map[string]Action{}

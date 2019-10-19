@@ -54,19 +54,6 @@ else
     go build --ldflags "${LD_FLAGS}" -o build/bin/  .
 fi
 
-if [ "${DEV}" == "" ]; then
-    # Zip and copy to the dist dir
-    echo "==> Packaging..."
-    for PLATFORM in $(find ./build/bin -mindepth 1 -maxdepth 1 -type d); do
-        OSARCH=$(basename ${PLATFORM})
-        echo "--> ${OSARCH}"
-
-        pushd $PLATFORM >/dev/null 2>&1
-        zip ../../pkg/${OSARCH}.zip ./*
-        popd >/dev/null 2>&1
-    done
-fi
-
 # Done!
 echo
 echo "==> Results:"

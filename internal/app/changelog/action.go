@@ -74,5 +74,7 @@ func (a *Action) Execute(cfg config.LetItGoConfig) error {
 	ui.Trace(out)
 
 	ui.Step("Publishing %s", a.File)
+
+	utils.WriteFile(a.File, out)
 	return utils.PublishFile(repo, a.File, out, a.Message)
 }

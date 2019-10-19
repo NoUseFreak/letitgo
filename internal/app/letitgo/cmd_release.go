@@ -50,6 +50,11 @@ func executeRelease(cmd *cobra.Command, args []string) {
 	ligConfig.Name = cfg.Name
 	ligConfig.Description = cfg.Description
 
+	if len(workload) == 0 {
+		color.Yellow("No supported actions found")
+		os.Exit(0)
+	}
+
 	for _, action := range workload {
 		ui.Phase("Releasing %s", action.Name())
 		if err := action.Execute(ligConfig); err != nil {
