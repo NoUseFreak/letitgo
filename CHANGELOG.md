@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.1 (October 19, 2019)
+
+- Fix changelog file location
+
+
+## 0.5.0 (October 19, 2019)
+
+- Refactor config format
+- Keep action info in one place
+- Add some info about init
+
+
 ## 0.4.0 (October 15, 2019)
 
 - Create init script
