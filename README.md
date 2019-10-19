@@ -81,7 +81,6 @@ letitgo:
   description: LetItGo automates releases.
   actions:
     - type: changelog
-      file: "test.md"
 
     - type: githubrelease
       assets:
