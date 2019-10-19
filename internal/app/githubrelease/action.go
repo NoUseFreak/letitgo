@@ -30,7 +30,7 @@ func (*Action) GetInitConfig() map[string]interface{} {
 
 // Weight return in what order this action should be handled.
 func (*Action) Weight() int {
-	return 10
+	return 20
 }
 
 // Execute handles the action.
