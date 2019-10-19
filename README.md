@@ -63,6 +63,7 @@ the release process is triggered.
 
 Action | Description
 --- | ---
+archive | Create archives of files.
 changelog | Generate a changelog and commit it to your project.
 githubrelease | Publish generated artifacts and attach them to a github release.
 helm | Package and/or publish helm charts to a registry like chartmuseum.
