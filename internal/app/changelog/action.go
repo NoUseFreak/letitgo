@@ -6,7 +6,6 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
-	"github.com/coreos/etcd/error"
 	"gopkg.in/src-d/go-git.v4"
 )
 
@@ -64,12 +63,12 @@ func (a *Action) Execute(cfg config.LetItGoConfig) error {
 	}
 	out, err := templateChangelog(vars)
 	if err != nil {
-		return fmt.Errorf("Unable to template changelog - %s", error.Error())
+		return fmt.Errorf("Unable to template changelog - %s", err.Error())
 	}
 
 	repo, err := utils.GetRemote(".")
 	if err != nil {
-		return fmt.Errorf("Unable to resolve remote - %s", error.Error())
+		return fmt.Errorf("Unable to resolve remote - %s", err.Error())
 	}
 
 	ui.Trace(out)
