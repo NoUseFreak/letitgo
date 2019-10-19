@@ -41,7 +41,7 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 	}}
 	last := 0
 
-	err = cIter.ForEach(func(c *object.Commit) error {
+	cIter.ForEach(func(c *object.Commit) error {
 		if tag, ok := tags[c.Hash.String()]; ok {
 			last++
 			tree = append(tree, releaseBlock{
@@ -60,7 +60,7 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 		return nil
 	})
 
-	return &tree, err
+	return &tree, nil
 }
 
 func newCommit(c *object.Commit) commit {
