@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0 (October 19, 2019)
+
+- Add archiving support
+
+
 ## 0.5.5 (October 19, 2019)
 
 - Try to fix error
@@ -108,10 +113,5 @@
 ## 0.1.6 (September 30, 2019)
 
 - Improvements
-
-
-## 0.1.5 (September 29, 2019)
-
-- Add ghrelease
 
 
