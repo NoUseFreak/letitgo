@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.5.5 (October 19, 2019)
+
+- Try to fix error
+
+
+## 0.5.4 (October 19, 2019)
+
+- Fix errors
+
+
+## 0.5.3 (October 19, 2019)
+
+- Clear errors
+
+
+## 0.5.2 (October 19, 2019)
+
+- Fix changelog file location
+
+
 ## 0.5.1 (October 19, 2019)
 
 - Fix changelog file location
@@ -93,37 +113,5 @@
 ## 0.1.5 (September 29, 2019)
 
 - Add ghrelease
-
-
-## 0.1.4 (September 28, 2019)
-
-- Fix release
-
-
-## 0.1.3 (September 28, 2019)
-
-- Fix release
-- Fix description
-
-
-## 0.1.2 (September 28, 2019)
-
-- Fix main symlink
-- Add LICENSE
-- Add more info
-- Add generated info
-- Build docker image
-- Rename project
-
-
-## 0.1.1 (September 27, 2019)
-
-- Add release flow
-
-
-## 0.1.0 (September 27, 2019)
-
-- Add travis config
-- Init
 
 
