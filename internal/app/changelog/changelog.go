@@ -2,6 +2,7 @@ package changelog
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 	"text/template"
 	"time"
@@ -16,7 +17,7 @@ import (
 func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock, error) {
 	ref, err := repo.Head()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to find HEAD - %s", err.Error())
 	}
 
 	tags := map[string]*plumbing.Reference{}
@@ -30,13 +31,14 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 		From:  ref.Hash(),
 		Order: git.LogOrderCommitterTime,
 	})
-
-	tree := []releaseBlock{
-		{
-			Tag:     "unreleased",
-			Commits: []commit{},
-		},
+	if err != nil {
+		return nil, fmt.Errorf("Failed to fetch log - %s", err.Error())
 	}
+
+	tree := []releaseBlock{{
+		Tag:     "unreleased",
+		Commits: []commit{},
+	}}
 	last := 0
 
 	err = cIter.ForEach(func(c *object.Commit) error {
