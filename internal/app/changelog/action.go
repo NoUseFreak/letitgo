@@ -1,9 +1,12 @@
 package changelog
 
 import (
+	"fmt"
+
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	"github.com/coreos/etcd/error"
 	"gopkg.in/src-d/go-git.v4"
 )
 
@@ -41,7 +44,7 @@ func (a *Action) Execute(cfg config.LetItGoConfig) error {
 
 	r, err := git.PlainOpen(".")
 	if err != nil {
-		return err
+		return fmt.Errorf("Unable to find git repo - %s", err.Error())
 	}
 
 	if lastCommitIsChangelog(r, a.Message, a.File) {
@@ -51,7 +54,7 @@ func (a *Action) Execute(cfg config.LetItGoConfig) error {
 
 	tree, err := buildReleaseBlocks(r, []string{a.Message})
 	if err != nil {
-		return err
+		return fmt.Errorf("Unable to build release blocks - %s", err.Error())
 	}
 
 	vars := struct {
@@ -61,12 +64,12 @@ func (a *Action) Execute(cfg config.LetItGoConfig) error {
 	}
 	out, err := templateChangelog(vars)
 	if err != nil {
-		return err
+		return fmt.Errorf("Unable to template changelog - %s", error.Error())
 	}
 
 	repo, err := utils.GetRemote(".")
 	if err != nil {
-		return err
+		return fmt.Errorf("Unable to resolve remote - %s", error.Error())
 	}
 
 	ui.Trace(out)

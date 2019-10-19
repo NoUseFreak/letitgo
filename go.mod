@@ -8,6 +8,7 @@ require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.21.0+incompatible
 	github.com/NoUseFreak/go-vembed v0.0.0-20190924200302-0a945ec137cf
+	github.com/coreos/etcd v3.3.10+incompatible
 	github.com/fatih/color v1.7.0
 	github.com/git-chglog/git-chglog v0.0.0-20190923122001-6050f20bcdb0
 	github.com/google/go-github v17.0.0+incompatible
