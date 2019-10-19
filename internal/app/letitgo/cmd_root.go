@@ -49,7 +49,7 @@ func getVersion(args []string) string {
 		return args[0]
 	}
 
-	v, err := utils.Run("describe", "--tags", "--abbrev", "0")
+	v, err := utils.Run("describe", "--tags", "--abbrev")
 	if err != nil {
 		ui.Error("Could not find an exact tag.")
 		os.Exit(0)
