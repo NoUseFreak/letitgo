@@ -9,15 +9,17 @@ import (
 	"path/filepath"
 	"strings"
 
-	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/google/go-github/github"
 	"github.com/sirupsen/logrus"
-	giturls "github.com/whilp/git-urls"
 	"golang.org/x/oauth2"
 	"gopkg.in/src-d/go-git.v4"
+
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
+	giturls "github.com/whilp/git-urls"
 )
 
+// Run executes a git command and returns the result.
 func Run(args ...string) (string, error) {
 	cmd := exec.Command("git", args...)
 	bts, err := cmd.CombinedOutput()
@@ -33,8 +35,8 @@ func Run(args ...string) (string, error) {
 	return output, err
 }
 
+// PublishFile publishes a file.
 func PublishFile(repoURL, path, content, message string) error {
-	ui.Step("Publishing file")
 	url, err := giturls.Parse(repoURL)
 	if err != nil {
 		return err
@@ -105,6 +107,7 @@ func publishFileGithub(url *url.URL, path, content, message string) error {
 	return err
 }
 
+// GetRemote looks at the given directory and returns the first git-remote name.
 func GetRemote(dir string) (string, error) {
 	repo, err := git.PlainOpen(dir)
 	if err != nil {

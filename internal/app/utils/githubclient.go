@@ -8,12 +8,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
+
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 )
 
+// GithubClient handles github api interactions.
 type GithubClient struct {
 	Owner  string
 	Repo   string
@@ -33,6 +35,7 @@ func (c *GithubClient) init() error {
 	return nil
 }
 
+// CreateRelease creates a release for a given version if it does not exist.
 func (c *GithubClient) CreateRelease(version, title, description string) (int64, error) {
 	if err := c.init(); err != nil {
 		return -1, err
@@ -67,6 +70,7 @@ func (c *GithubClient) CreateRelease(version, title, description string) (int64,
 	return release.GetID(), err
 }
 
+// UploadAssets uploads multiple assets to a given release.
 func (c *GithubClient) UploadAssets(releaseID int64, assets []string) error {
 	if err := c.init(); err != nil {
 		return err
@@ -87,6 +91,7 @@ func (c *GithubClient) UploadAssets(releaseID int64, assets []string) error {
 	return nil
 }
 
+// UploadAsset uploads a single asset to a given release.
 func (c *GithubClient) UploadAsset(releaseID int64, asset string) error {
 	ui.Step("Uploading %s", asset)
 	if err := c.init(); err != nil {

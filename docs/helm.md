@@ -15,9 +15,9 @@ Parameter | Description | Default
 ### Example
 
 ```yaml
-helm:
-  - charts:
-      - ./test/test-chart
-    builddir: build/helm/
-    repository: https://enxmp9berw1vj.x.pipedream.net
+    - type: helm:
+      charts:
+        - ./test/test-chart
+      builddir: build/helm/
+      repository: https://enxmp9berw1vj.x.pipedream.net
 ```

@@ -20,9 +20,9 @@ Parameter | Description | Default
 ### Example
 
 ```yaml
-githubrelease:
-  - owner: NoUseFreak
-    repo: letitgo
-    assets:
-      - ./build/pkg/*
+    - type: githubrelease
+      owner: NoUseFreak
+      repo: letitgo
+      assets:
+        - ./build/pkg/*
 ```

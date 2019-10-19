@@ -1,53 +1,56 @@
 package letitgo
 
 import (
-	"sort"
-
-	e "github.com/NoUseFreak/letitgo/internal/app/errors"
-	"github.com/NoUseFreak/letitgo/internal/app/ui"
-	"github.com/fatih/color"
+	"github.com/NoUseFreak/letitgo/internal/app/changelog"
+	"github.com/NoUseFreak/letitgo/internal/app/config"
+	"github.com/NoUseFreak/letitgo/internal/app/githubrelease"
+	"github.com/NoUseFreak/letitgo/internal/app/helm"
+	"github.com/NoUseFreak/letitgo/internal/app/homebrew"
+	"github.com/NoUseFreak/letitgo/internal/app/snapcraft"
 )
 
-var actions = Actions{}
+func init() {
+	registerAction(new(changelog.Action))
+	registerAction(new(githubrelease.Action))
+	registerAction(new(helm.Action))
+	registerAction(new(homebrew.Action))
+	registerAction(new(snapcraft.Action))
+}
 
+var letItGoActions = map[string]Action{}
+
+// Actions is a slice of Action structs.
 type Actions []Action
 
-func (s Actions) Len() int      { return len(s) }
-func (s Actions) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
-
+// Action is an action LetItGo can handle.
 type Action interface {
 	Name() string
 	GetInitConfig() map[string]interface{}
-	GetDefaults() Config
+	// GetDefaults() Config
 	Weight() int
-	Execute(Config) error
+	Execute(config.LetItGoConfig) error
 }
 
-func registerAction(a Action) {
-	actions = append(actions, a)
+// Len returns the length of the slice.
+func (s Actions) Len() int { return len(s) }
+
+// Swap swaps two items from possition.
+func (s Actions) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+
+func registerAction(action Action) {
+	letItGoActions[action.Name()] = action
 }
 
-func RunAll(cfg Config) error {
-	sort.Sort(ByWeight{actions})
-	for _, a := range actions {
-		ui.Trace("Running %T", a)
-		if err := a.Execute(cfg); err != nil {
-			switch er := err.(type) {
-			case *e.SkipError:
-				color.Yellow("  " + er.Error())
-			default:
-				return err
-			}
-		}
-	}
-
-	return nil
+func getActions() map[string]Action {
+	return letItGoActions
 }
 
+// ByWeight allows to sort Actions by Weight.
 type ByWeight struct {
 	Actions
 }
 
+// Less Compares weights of each action.
 func (s ByWeight) Less(i, j int) bool {
 	return s.Actions[i].Weight() < s.Actions[j].Weight()
 }

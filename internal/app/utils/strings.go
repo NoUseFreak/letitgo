@@ -2,6 +2,7 @@ package utils
 
 import "bytes"
 
+// NormalizeNewlines removes any newlines from a string.
 func NormalizeNewlines(s string) string {
 	d := []byte(s)
 	// replace CR LF \r\n (windows) with LF \n (unix)
@@ -10,11 +11,4 @@ func NormalizeNewlines(s string) string {
 	d = bytes.Replace(d, []byte{13}, []byte{10}, -1)
 
 	return string(d)
-}
-
-func DefaultString(v string, d string) string {
-	if v == "" {
-		return d
-	}
-	return v
 }

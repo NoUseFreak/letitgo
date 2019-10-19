@@ -1,20 +1,8 @@
 package letitgo
 
-import (
-	"github.com/NoUseFreak/letitgo/internal/app/changelog"
-	"github.com/NoUseFreak/letitgo/internal/app/config"
-	"github.com/NoUseFreak/letitgo/internal/app/githubrelease"
-	"github.com/NoUseFreak/letitgo/internal/app/helm"
-	"github.com/NoUseFreak/letitgo/internal/app/homebrew"
-	"github.com/NoUseFreak/letitgo/internal/app/snapcraft"
-)
-
+// Config is the lowest level config.
 type Config struct {
-	LetItGo config.LetItGoConfig
-
-	Changelog     []changelog.Config
-	GithubRelease []githubrelease.Config
-	Homebrew      []homebrew.Config
-	Snapcraft     []snapcraft.Config
-	Helm          []helm.Config
+	Name        string                   `yaml:"name"`
+	Description string                   `yaml:"description"`
+	Actions     []map[string]interface{} `yaml:"actions"`
 }

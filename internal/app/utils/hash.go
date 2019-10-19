@@ -10,11 +10,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/sirupsen/logrus"
+	"github.com/NoUseFreak/letitgo/internal/app/ui"
 )
 
+// BuildURLHash return the hash of a remote file.
 func BuildURLHash(alg, url string) (string, error) {
-	logrus.Tracef("Downloading %s", url)
+	ui.Trace("Downloading %s", url)
 	client := http.Client{
 		Timeout: 30 * time.Second,
 	}
@@ -31,6 +32,7 @@ func BuildURLHash(alg, url string) (string, error) {
 	return BuildHash(alg, resp.Body)
 }
 
+// BuildHash returns the hash of a local file.
 func BuildHash(alg string, reader io.Reader) (string, error) {
 
 	var hasher hash.Hash

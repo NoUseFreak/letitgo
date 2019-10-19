@@ -8,12 +8,15 @@ import (
 	"os/exec"
 	"path"
 
-	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
+
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 )
 
+// Helm provices a wrapper for all helm interactions.
 type Helm struct{}
 
+// Package uses the helm binary to package a chart.
 func (h *Helm) Package(chart, target, version string) error {
 	ui.Step("Packaging %s@%s", path.Base(chart), version)
 
@@ -30,6 +33,7 @@ func (h *Helm) Package(chart, target, version string) error {
 	return cmd.Run()
 }
 
+// Publish pushes an packages chart to a given repository.
 func (h *Helm) Publish(artifact, repository string) error {
 	ui.Step("Publishing %s", path.Base(artifact))
 

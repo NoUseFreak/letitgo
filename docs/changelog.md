@@ -14,6 +14,6 @@ Parameter | Description | Default
 ### Example
 
 ```yaml
-changelog:
-  - file: CHANGELOG.md
+    - type changelog:
+      file: CHANGELOG.md
 ```

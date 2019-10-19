@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/sirupsen/logrus"
@@ -42,17 +41,7 @@ func Execute() {
 }
 
 func runRoot(cmd *cobra.Command, args []string) {
-	ui.Title("LetItGo")
-	version := getVersion(args)
-	ui.Debug("Going to work with version '%s'", version)
-
-	cfg := Config{}
-	cfg.LetItGo = config.NewConfig(version)
-	utils.ParseYamlFile(".release.yml", &cfg)
-	if err := RunAll(cfg); err != nil {
-		ui.Error(err.Error())
-		os.Exit(1)
-	}
+	releaseCmd.Run(cmd, args)
 }
 
 func getVersion(args []string) string {

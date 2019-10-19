@@ -5,11 +5,11 @@ import (
 	"io/ioutil"
 	"os"
 
-	survey "github.com/AlecAivazis/survey/v2"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
+	survey "github.com/AlecAivazis/survey/v2"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -56,38 +56,37 @@ func getData() (string, error) {
 		Message: "Project description",
 	}, &description)
 
-	ligcfg := map[string]interface{}{
-		"letitgo": map[string]string{
-			"name":        name,
-			"description": description,
-		},
+	enabled := []yaml.MapSlice{}
+	for _, a := range getActions() {
+		if askEnableAction(a.Name()) {
+			action := yaml.MapSlice{{
+				Key:   "type",
+				Value: a.Name(),
+			}}
+			for k, v := range a.GetInitConfig() {
+				action = append(action, yaml.MapItem{
+					Key:   k,
+					Value: v,
+				})
+			}
+			enabled = append(enabled, action)
+		}
 	}
 
-	enabled := Actions{}
-	for _, a := range actions {
-		if askEnableAction(a.Name()) {
-			enabled = append(enabled, a)
-		}
+	ligcfg := map[string]interface{}{
+		"letitgo": yaml.MapSlice{
+			{Key: "name", Value: name},
+			{Key: "description", Value: description},
+			{Key: "actions", Value: enabled},
+		},
 	}
 
 	out, err := yaml.Marshal(ligcfg)
 	if err != nil {
 		return "", err
 	}
-	content := string(out)
 
-	for _, a := range enabled {
-		d := map[string]interface{}{
-			a.Name(): []interface{}{a.GetInitConfig()},
-		}
-		aout, err := yaml.Marshal(d)
-		if err != nil {
-			return "", err
-		}
-		content += "\n" + string(aout)
-	}
-
-	return content, nil
+	return string(out), nil
 }
 
 func askEnableAction(name string) bool {

@@ -27,10 +27,10 @@ Parameter | Description | Default
 The following example configuration will update `Formula/letitgo.rb`.
 
 ```yaml
-homebrew:
-  - homepage: https://github.com/NoUseFreak/letitgo
-    url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/darwin_amd64.zip
-    tap:
-      url: git@github.com:NoUseFreak/homebrew-brew.git
-    test: system "#{bin}/{{ .Name }} -h"
+    - type: homebrew:
+      homepage: https://github.com/NoUseFreak/letitgo
+      url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/darwin_amd64.zip
+      tap:
+        url: git@github.com:NoUseFreak/homebrew-brew.git
+      test: system "#{bin}/{{ .Name }} -h"
 ```

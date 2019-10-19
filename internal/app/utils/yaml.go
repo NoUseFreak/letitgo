@@ -4,9 +4,10 @@ import (
 	"io/ioutil"
 	"log"
 
-	"gopkg.in/yaml.v1"
+	"gopkg.in/yaml.v2"
 )
 
+// ParseYamlFile parses a yaml file
 func ParseYamlFile(path string, data interface{}) {
 	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {

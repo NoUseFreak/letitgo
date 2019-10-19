@@ -13,4 +13,8 @@ test_e2e:
 install:
 	# todo
 
+report:
+	mkdir -p build/report
+	goreporter -p . -r build/report
+
 .PHONY: build test

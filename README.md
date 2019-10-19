@@ -75,22 +75,22 @@ All actions and example configuration can be found in the [docs directory](docs/
 
 The following is an example config used to release this project.
 
-```
+```yaml
 letitgo:
   name: letitgo
   description: LetItGo automates releases.
+  actions:
+    - type: changelog
+      file: "test.md"
 
-changelog:
-  - file: CHANGELOG.md
-
-githubrelease:
-  - assets:
+    - type: githubrelease
+      assets:
       - ./build/pkg/*
 
-homebrew:
-  - homepage: https://github.com/NoUseFreak/letitgo
-    url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/darwin_amd64.zip
-    tap:
-      url: git@github.com:NoUseFreak/homebrew-brew.git
-    test: system "#{bin}/{{ .Name }} -h"
+    - type: homebrew
+      homepage: https://github.com/NoUseFreak/letitgo
+      url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/darwin_amd64.zip
+      tap:
+        url: git@github.com:NoUseFreak/homebrew-brew.git
+      test: system "#{bin}/{{ .Name }} -h"
 ```

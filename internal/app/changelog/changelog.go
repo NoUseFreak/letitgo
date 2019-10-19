@@ -7,58 +7,13 @@ import (
 	"time"
 
 	"github.com/Masterminds/sprig"
-	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 )
 
-func Execute(c Config) error {
-	if c.File == "" {
-		c.File = "CHANGELOG.md"
-	}
-	if c.Message == "" {
-		c.Message = "Update changelog\n[skip ci]"
-	}
-
-	r, err := git.PlainOpen(".")
-	if err != nil {
-		return err
-	}
-
-	if lastCommitIsChangelog(r, c.Message, c.File) {
-		ui.Info("Skipping changelog")
-		return nil
-	}
-
-	tree, err := buildReleaseBlocks(r, []string{c.Message})
-	if err != nil {
-		return err
-	}
-
-	vars := struct {
-		Blocks []ReleaseBlock
-	}{
-		Blocks: *tree,
-	}
-	out, err := templateChangelog(vars)
-	if err != nil {
-		return err
-	}
-
-	repo, err := utils.GetRemote(".")
-	if err != nil {
-		return err
-	}
-
-	ui.Trace(out)
-
-	ui.Phase("Publishing %s", c.File)
-	return utils.PublishFile(repo, c.File, out, c.Message)
-}
-
-func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]ReleaseBlock, error) {
+func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock, error) {
 	ref, err := repo.Head()
 	if err != nil {
 		return nil, err
@@ -76,10 +31,10 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]ReleaseBlock,
 		Order: git.LogOrderCommitterTime,
 	})
 
-	tree := []ReleaseBlock{
+	tree := []releaseBlock{
 		{
 			Tag:     "unreleased",
-			Commits: []Commit{},
+			Commits: []commit{},
 		},
 	}
 	last := 0
@@ -87,11 +42,11 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]ReleaseBlock,
 	err = cIter.ForEach(func(c *object.Commit) error {
 		if tag, ok := tags[c.Hash.String()]; ok {
 			last++
-			tree = append(tree, ReleaseBlock{
+			tree = append(tree, releaseBlock{
 				Tag:     tag.Name().Short(),
 				Date:    &c.Committer.When,
 				Ref:     tag,
-				Commits: []Commit{},
+				Commits: []commit{},
 			})
 		}
 		for _, ig := range ignore {
@@ -106,8 +61,8 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]ReleaseBlock,
 	return &tree, err
 }
 
-func newCommit(c *object.Commit) Commit {
-	commit := Commit{
+func newCommit(c *object.Commit) commit {
+	commit := commit{
 		Message:      c.Message,
 		MessageShort: strings.Split(utils.NormalizeNewlines(c.Message), "\n")[0],
 		Hash:         c.Hash.String(),
@@ -116,14 +71,14 @@ func newCommit(c *object.Commit) Commit {
 	return commit
 }
 
-type ReleaseBlock struct {
+type releaseBlock struct {
 	Tag     string
 	Date    *time.Time
 	Ref     *plumbing.Reference
-	Commits []Commit
+	Commits []commit
 }
 
-type Commit struct {
+type commit struct {
 	Message      string
 	MessageShort string
 	Hash         string

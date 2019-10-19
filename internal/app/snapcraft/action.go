@@ -9,18 +9,44 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/sirupsen/logrus"
 )
 
-func Execute(c Config) error {
-	c.Name = utils.DefaultString(c.Name, c.LetItGo.Name)
+// Action creates and publishes a snap.
+type Action struct {
+	Assets       []string
+	Architecture string
+}
 
+// Name return the name of the action.
+func (*Action) Name() string {
+	return "snapcraft"
+}
+
+// GetInitConfig return what a good starting config would be.
+func (*Action) GetInitConfig() map[string]interface{} {
+	return map[string]interface{}{
+		"assets": []string{
+			"./build/bin/linux_amd64/letitgo",
+		},
+		"architecture": "amd64",
+	}
+}
+
+// Weight return in what order this action should be handled.
+func (*Action) Weight() int {
+	return 110
+}
+
+// Execute handles the action.
+func (c *Action) Execute(cfg config.LetItGoConfig) error {
 	if _, err := exec.LookPath("snapcraft"); err != nil {
 		return errors.New("snapcraft binary not installed")
 	}
 
-	dir := path.Join("/tmp", ".letitgo-"+c.Name)
+	dir := path.Join("/tmp", ".letitgo-"+cfg.Name)
 	metaDir := path.Join(dir, "meta")
 
 	if err := os.MkdirAll(metaDir, 0777); err != nil {
@@ -36,7 +62,7 @@ func Execute(c Config) error {
 		}
 	}
 
-	content, err := utils.Template(snapcraftTpl, &c)
+	content, err := utils.Template(snapcraftTpl, cfg, c)
 	if err != nil {
 		return err
 	}
@@ -58,7 +84,7 @@ func Execute(c Config) error {
 		return err
 	}
 
-	name := fmt.Sprintf("%s_%s_%s.snap", c.Name, c.Version(), c.Architecture)
+	name := fmt.Sprintf("%s_%s_%s.snap", cfg.Name, cfg.Version(), c.Architecture)
 	cmd = exec.Command("snapcraft", "push", name)
 	cmd.Dir = dir
 	if logrus.IsLevelEnabled(logrus.DebugLevel) {

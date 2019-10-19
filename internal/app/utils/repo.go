@@ -5,12 +5,14 @@ import (
 	"regexp"
 )
 
+// GitURI represents a git URL.
 type GitURI struct {
 	Host  string
 	Owner string
 	Repo  string
 }
 
+// ParseURI returns a GitURL.
 func ParseURI(uri string) (*GitURI, error) {
 	gitURI := GitURI{
 		Host: "github.com",

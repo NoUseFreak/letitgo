@@ -14,8 +14,8 @@ Parameter | Description | Default
 ### Example
 
 ```yaml
-snapcraft:
-  - assets: 
-      - build/bin/linux_amd64/letitgo
-    architecture: amd64
+    - type: snapcraft:
+      assets: 
+        - build/bin/linux_amd64/letitgo
+      architecture: amd64
 ```
