@@ -66,5 +66,6 @@ func (c *Action) Execute(cfg config.LetItGoConfig) error {
 	filename := path.Join(c.Folder, fmt.Sprintf("%s.rb", cfg.Name))
 	message := fmt.Sprintf("Upgrade %s to %s", cfg.Name, cfg.Version())
 
+	ui.Step("Uploading %s", filename)
 	return utils.PublishFile(c.Tap.URL, filename, content, message)
 }
