@@ -32,7 +32,7 @@ func (*Action) GetInitConfig() map[string]interface{} {
 		"source": "./build/bin/*",
 		"target": "./build/pkg/",
 		"extras": []string{"LICENSE.md"},
-		"mode":   "zip",
+		"method": "zip",
 	}
 }
 
