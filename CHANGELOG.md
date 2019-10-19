@@ -3,6 +3,7 @@
 ## 0.5.1 (October 19, 2019)
 
 - Fix changelog file location
+- Fix changelog file location
 
 
 ## 0.5.0 (October 19, 2019)
