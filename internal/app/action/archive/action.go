@@ -121,7 +121,7 @@ func zipAddFile(archive *zip.Writer, baseDir string, info os.FileInfo, path, sou
 	}
 
 	if baseDir != "" {
-		header.Name = filepath.Join(strings.TrimPrefix(path, source))
+		header.Name = filepath.Join(strings.TrimPrefix(path, source))[1:]
 	}
 
 	if info.IsDir() {
