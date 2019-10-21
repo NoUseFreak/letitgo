@@ -20,5 +20,8 @@ report:
 website:
 	cd website \
 		&& hugo serve
-		
+
+build_website:
+	sh -c "'$(CURDIR)/scripts/build_website.sh'"
+
 .PHONY: build test website
