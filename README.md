@@ -4,11 +4,14 @@
 [![Release](https://img.shields.io/github/v/release/NoUseFreak/letitgo?style=flat-square)](https://github.com/NoUseFreak/letitgo/releases)
 [![Maintained](https://img.shields.io/maintenance/yes/2019?style=flat-square)](https://github.com/NoUseFreak/letitgo)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/nousefreak/letitgo?style=flat-square)](https://hub.docker.com/r/nousefreak/letitgo)
+![Website](https://img.shields.io/netlify/7c9a64af-aefa-4157-b681-20833d61f7d1?style=flat-square)
 [![License](https://img.shields.io/github/license/NoUseFreak/letitgo?style=flat-square)](https://github.com/NoUseFreak/letitgo/blob/master/LICENSE)
 [![Coffee](https://img.shields.io/badge/☕️-Buy%20me%20a%20coffee-blue?style=flat-square&color=blueviolet)](https://www.buymeacoffee.com/driesdepeuter)
 
 LetItGo simplifies automated releases. A simple definition in `.release.yml` in 
 the root of your project is all you need.
+
+Check out the [docs](https://letitgo.nousefreak.be/) for full documentation. 
 
 
 ## Install
