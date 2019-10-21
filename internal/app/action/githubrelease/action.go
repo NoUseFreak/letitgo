@@ -54,7 +54,7 @@ func (c *githubrelease) Execute(cfg config.LetItGoConfig) error {
 		Repo:  c.Repo,
 	}
 	rID, err := client.CreateRelease(
-		cfg.Version(),
+		cfg.Version().String(),
 		c.Title,
 		c.Description,
 	)

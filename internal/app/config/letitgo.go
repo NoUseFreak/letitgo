@@ -5,17 +5,17 @@ type LetItGoConfig struct {
 	Name        string
 	Description string
 
-	version string
+	version Version
 }
 
 // NewConfig creates a config with the version set.
 func NewConfig(v string) LetItGoConfig {
 	return LetItGoConfig{
-		version: v,
+		version: newVersion(v),
 	}
 }
 
 // Version returns the version.
-func (lig *LetItGoConfig) Version() string {
+func (lig *LetItGoConfig) Version() Version {
 	return lig.version
 }

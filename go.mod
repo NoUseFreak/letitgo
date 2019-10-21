@@ -8,8 +8,11 @@ require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.21.0+incompatible
 	github.com/NoUseFreak/go-vembed v0.0.0-20190924200302-0a945ec137cf
+	github.com/caarlos0/env/v6 v6.1.0
 	github.com/coreos/etcd v3.3.10+incompatible
+	github.com/coreos/go-semver v0.2.0
 	github.com/fatih/color v1.7.0
+	github.com/fsouza/go-dockerclient v1.5.0
 	github.com/git-chglog/git-chglog v0.0.0-20190923122001-6050f20bcdb0
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/google/go-querystring v1.0.0 // indirect

@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/cobra"
 
 	e "github.com/NoUseFreak/letitgo/internal/app/errors"
+	env "github.com/caarlos0/env/v6"
 )
 
 var releaseCmd = &cobra.Command{
@@ -38,12 +39,15 @@ func executeRelease(cmd *cobra.Command, args []string) {
 		if action := getActions()[actionType]; action != nil {
 			mapstructure.Decode(a, action)
 			mapstructure.Decode(cfg, action)
+			if err := env.Parse(action); err != nil {
+				ui.Warn("Failed to parse environment - %s", err.Error())
+			}
 
 			workload = append(workload, action)
 		}
 	}
 
-	sort.Sort(action.ByWeight{workload})
+	sort.Sort(action.ByWeight{Actions: workload})
 
 	version := getVersion(args)
 

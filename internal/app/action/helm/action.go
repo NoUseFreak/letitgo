@@ -49,7 +49,7 @@ func (c *helm) Execute(cfg config.LetItGoConfig) error {
 	helm := utils.Helm{}
 	if len(c.Charts) != 0 {
 		for _, chart := range c.Charts {
-			if err := helm.Package(chart, c.BuildDir, cfg.Version()); err != nil {
+			if err := helm.Package(chart, c.BuildDir, cfg.Version().String()); err != nil {
 				return err
 			}
 		}

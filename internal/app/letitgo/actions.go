@@ -4,6 +4,7 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/action/archive"
 	"github.com/NoUseFreak/letitgo/internal/app/action/changelog"
+	"github.com/NoUseFreak/letitgo/internal/app/action/docker"
 	"github.com/NoUseFreak/letitgo/internal/app/action/githubrelease"
 	"github.com/NoUseFreak/letitgo/internal/app/action/helm"
 	"github.com/NoUseFreak/letitgo/internal/app/action/homebrew"
@@ -19,6 +20,7 @@ func init() {
 	registerAction(helm.New())
 	registerAction(homebrew.New())
 	registerAction(snapcraft.New())
+	registerAction(docker.New())
 }
 
 func registerAction(action action.Action) {
