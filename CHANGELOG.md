@@ -1,11 +1,17 @@
 # Changelog
 
+## 0.6.1 (October 21, 2019)
+
+- Ignore duplicate entries in release blocks
+- Add website link
+- Build website
+- Restructure packages
+- Add website
+- List archive action
+- Add archive docs
+
+
 ## 0.6.0 (October 19, 2019)
-
-- Add archiving support
-
-
-## 0.5.5-2-g3e22d5a (October 19, 2019)
 
 - Add archiving support
 
@@ -32,8 +38,6 @@
 
 ## 0.5.1 (October 19, 2019)
 
-- Fix changelog file location
-- Fix changelog file location
 - Fix changelog file location
 
 
@@ -77,26 +81,5 @@
 - Group and default to main config
 - Text fix
 - Add docs for each action
-- Do not build changelog commits by default
-- Only render first line from commit message
-- Update changelog
-
-
-## 0.1.12 (October 4, 2019)
-
-- Don't publish if changes are the same
-- Update changelog
-
-
-## 0.1.11 (October 4, 2019)
-
-- Add changelog
-- Update issue templates
-
-
-## 0.1.10 (October 3, 2019)
-
-- Add usage documentation
-- Add workdir to dockerfile for easier usage
 
 
