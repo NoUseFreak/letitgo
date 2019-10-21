@@ -1,7 +1,11 @@
 # Changelog
 
-## 0.6.2 (October 21, 2019)
+## 0.7.0 (October 21, 2019)
 
+- Fix docker image tagging
+- Implement docker dryRun
+- Handle error
+- Add docker
 - Fix absolute path in archive
 
 
@@ -73,17 +77,5 @@
 - Add link to all actions
 - Add snapcraft doc
 - Implement snapcraft
-
-
-## 0.1.14 (October 5, 2019)
-
-- Fix homebrew naming
-- Fix homebrew filename
-
-
-## 0.1.13 (October 5, 2019)
-
-- Group and default to main config
-- Text fix
 
 
