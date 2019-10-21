@@ -38,6 +38,12 @@
             padding-top: 100px !important;
             margin-top: -100px !important;
         }
+        h2 a, h2 a:hover, h2 a:visited, h2 a:active,
+        h3 a, h3 a:hover, h3 a:visited, h3 a:active {
+            text-decoration: none;
+            color: #333;
+
+        }
         .uk-nav li a {
             padding: 5px 0;
             font-size: 12px;
@@ -74,13 +80,17 @@
                         {{ range .ByWeight }}
                             {{ $id := .Title | lower }}
                             <section class="tm-section">
-                                <h2 id="{{ $id }}">{{ .Title }}</h2>
+                                <h2 id="{{ $id }}">
+                                    <a href="#{{ $id }}">{{ .Title }}</a>
+                                </h2>
                                 {{ .Content }}
                             </section>
                             <hr class="uk-margin-large">
                             {{ range .Pages.ByWeight }}
                                 <section class="tm-section">
-                                    <h3 id="{{ $id }}-{{ .File | path.Base }}">{{ .Title }}</h3>
+                                    <h3 id="{{ $id }}-{{ .File | path.Base }}">
+                                        <a href="#{{ $id }}-{{ .File | path.Base }}">{{ .Title }}</a>
+                                    </h3>
                                     {{ .Content }}
                                 </section>
                                 <hr class="uk-margin-large">
