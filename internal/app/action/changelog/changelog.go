@@ -56,6 +56,11 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 				return nil
 			}
 		}
+		for _, pc := range tree[last].Commits {
+			if pc.Message == c.Message {
+				return nil
+			}
+		}
 		tree[last].Commits = append(tree[last].Commits, newCommit(c))
 		return nil
 	})
