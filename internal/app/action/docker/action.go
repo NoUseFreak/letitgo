@@ -12,6 +12,7 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	dckr "github.com/fsouza/go-dockerclient"
 )
 
@@ -74,6 +75,13 @@ func (c *docker) Execute(cfg config.LetItGoConfig) error {
 	ui.Step("Tagging image %s", imageNames[0])
 	if err := c.tagImages(client, imageNames[0], imageNames[1:]); err != nil {
 		return err
+	}
+
+	if utils.DryRun {
+		return &e.SkipError{
+			Reason: "dryrun",
+			Part:   "push images",
+		}
 	}
 
 	if c.NoPush {
