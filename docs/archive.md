@@ -1,6 +1,8 @@
-# Archive
+---
+title: "Archive"
+---
 
-## Configuration
+#### Configuration
 
 Parameter | Description | Default
 --- | --- | ---
@@ -9,7 +11,7 @@ Parameter | Description | Default
 `extras` | List of files to to include in the archive as extras. | []
 `method` | What method to use to create the archives. | "zip"
 
-### Example
+#### Example
 
 ```yaml
     - type: archive

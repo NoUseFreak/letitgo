@@ -1,17 +1,19 @@
-# Snapcraft
+---
+title: "Snapcraft"
+---
 
-## Prerequisites
+#### Prerequisites
 
 - Requires `snapcraft` to be installed and logged in.
 
-## Configuration
+#### Configuration
 
 Parameter | Description | Default
 --- | --- | ---
 `assets` | Binary to package in the snap. | []
 `architecture` | Type of binary. (all, amd64, i386) | ""
 
-### Example
+#### Example
 
 ```yaml
     - type: snapcraft:

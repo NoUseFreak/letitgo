@@ -1,0 +1,7 @@
+baseURL = "https://letitgo.nousefreak.be/"
+languageCode = "en-us"
+title = "LetItGo"
+theme = "docs"
+
+[blackfriday]
+  plainIDAnchors = false

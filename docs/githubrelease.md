@@ -1,13 +1,15 @@
-# Github Release
+---
+title: "Githubrelease"
+---
 
 Publish your artifacts as a github release. It will make on it it does not exist
 and publish all files matching the `assets` rules.
 
-## Prerequisites
+#### Prerequisites
 
 - Requires `GITHUB_TOKEN` to be set in the environment.
 
-## Configuration
+#### Configuration
 
 Parameter | Description | Default
 --- | --- | ---
@@ -17,7 +19,7 @@ Parameter | Description | Default
 `description` | Description of the release. | "{{ .Description }}"
 `assets` | List of assets to attach to the release. | []
 
-### Example
+#### Example
 
 ```yaml
     - type: githubrelease

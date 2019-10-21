@@ -1,17 +1,19 @@
-# Changelog
+---
+title: "Changelog"
+---
 
-## Prerequisites
+#### Prerequisites
 
 - Requires `GITHUB_TOKEN` to be set in the environment.
 
-## Configuration
+#### Configuration
 
 Parameter | Description | Default
 --- | --- | ---
 `file` | File to place the changelog data. | "CHANGELOG.md"
 `message` | Commit message to add to the commit. | "Update changelog\n[skip ci]"
 
-### Example
+#### Example
 
 ```yaml
     - type changelog:

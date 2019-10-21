@@ -17,4 +17,8 @@ report:
 	mkdir -p build/report
 	goreporter -p . -r build/report
 
-.PHONY: build test
+website:
+	cd website \
+		&& hugo serve
+		
+.PHONY: build test website

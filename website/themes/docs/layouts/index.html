@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- UIkit -->
+    <link rel="stylesheet" href="https://www.unpkg.com/uikit@3.2.1/dist/css/uikit.min.css" />
+    <script src="https://www.unpkg.com/uikit@3.2.1/dist/js/uikit.min.js"></script>
+    <script src="https://www.unpkg.com/uikit@3.2.1/dist/js/uikit-icons.min.js"></script>
+
+    <!-- Highlight.js-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/monokai.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+
+    <style>
+        nav {
+            padding: 0 20px;
+        }
+        .tm-logo {
+            font-size: 24px;
+            font-family: ProximaNova,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+            margin: 5px 0;
+            font-weight: 100;
+        }
+        .tm-sidebar {
+            overflow: auto;
+            border-right: 1px solid #e5e5e5;
+            background-color: #fefefe;
+        }
+        .tm-section {
+            margin-bottom: 150px;
+        }
+        h2, h3 {
+            padding-top: 100px !important;
+            margin-top: -100px !important;
+        }
+        .uk-nav li a {
+            padding: 5px 0;
+            font-size: 12px;
+        }
+        .uk-nav li.uk-nav-header a {
+            text-transform: uppercase;
+            padding: 2px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <div uk-sticky class="uk-tile-primary">
+            <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+                <div class="uk-navbar-left">
+                    <a class="uk-logo" href="/">
+                        <h1 class="uk-padding-small tm-logo">LetItGo</h1>
+                    </a>
+                </div>
+                <div class="uk-navbar-right">
+                    <a href="https://github.com/NoUseFreak/letitgo" class="uk-icon-button" uk-icon="icon: github; ratio: 2"></a>
+                </div>
+            </nav>
+        </div>
+        <div uk-grid>
+            {{ partial "sidebar.html" . }}
+            
+            <div class="uk-width-expand@m uk-padding-small">
+                <div class="uk-padding-large">
+                    
+                    {{ with .Sections }}
+                        {{ range .ByWeight }}
+                            <section class="tm-section">
+                                <h2 id="{{ .Title | lower }}">{{ .Title }}</h2>
+                                {{ .Content }}
+                            </section>
+                            <hr class="uk-margin-large">
+                            {{ range .Pages.ByWeight }}
+                                <section class="tm-section">
+                                    <h3 id="{{ .File | path.Base }}">{{ .Title }}</h3>
+                                    {{ .Content }}
+                                </section>
+                                <hr class="uk-margin-large">
+                            {{ end}}
+
+                        {{ end }}
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll("table").forEach((element) => {
+                element.classList.add("uk-table", "uk-table-striped", "uk-table-justify", "uk-table-small");
+            });
+
+            document.querySelectorAll("pre").forEach((element) => {
+                element.classList.add("uk-card", "uk-card-default", "uk-padding-remove");
+            });
+
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+        });
+    </script>
+</body>
+</html>

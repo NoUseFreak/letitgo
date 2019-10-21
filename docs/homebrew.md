@@ -1,13 +1,15 @@
-# Homebrew
+---
+title: "Homebrew"
+---
 
 Currently it is only supported to update [Taps](https://docs.brew.sh/Taps).
 It requires `GITHUB_TOKEN` to be set. 
 
-## Prerequisites
+#### Prerequisites
 
 - Requires `GITHUB_TOKEN` to be set in the environment.
 
-## Configuration
+#### Configuration
 
 Parameter | Description | Default
 --- | --- | ---
@@ -22,7 +24,7 @@ Parameter | Description | Default
 `install` | Install action | "bin.install \"{{ .Name }}\""
 `test` | Test action | ""
 
-### Example
+#### Example
 
 The following example configuration will update `Formula/letitgo.rb`.
 

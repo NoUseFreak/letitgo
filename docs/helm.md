@@ -1,10 +1,12 @@
-# Helm
+---
+title: "Helm"
+---
 
-## Prerequisites
+#### Prerequisites
 
 - Requires `helm` to be installed.
 
-## Configuration
+#### Configuration
 
 Parameter | Description | Default
 --- | --- | ---
@@ -12,7 +14,7 @@ Parameter | Description | Default
 `builddir` | Directory to package charts in. | "./build/helm"
 `repository` | Repository to publish charts to. | ""
 
-### Example
+#### Example
 
 ```yaml
     - type: helm:
