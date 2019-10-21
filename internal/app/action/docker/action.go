@@ -107,11 +107,11 @@ func (c *docker) buildImage(client *dckr.Client, imageName string) error {
 	})
 }
 
-func (c *docker) tagImages(client *dckr.Client, name string, imageNames []string) error {
+func (c *docker) tagImages(client *dckr.Client, baseName string, imageNames []string) error {
 	for _, name := range imageNames {
 		ui.Step("Tagging image %s", name)
 		img := parseImageName(name)
-		err := client.TagImage(name, dckr.TagImageOptions{
+		err := client.TagImage(baseName, dckr.TagImageOptions{
 			Repo: img.Repo,
 			Tag:  img.Tag,
 		})
