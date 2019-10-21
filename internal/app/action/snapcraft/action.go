@@ -9,24 +9,27 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/sirupsen/logrus"
 )
 
-// Action creates and publishes a snap.
-type Action struct {
+// New returns an action for snapcraft
+func New() action.Action {
+	return &snapcraft{}
+}
+
+type snapcraft struct {
 	Assets       []string
 	Architecture string
 }
 
-// Name return the name of the action.
-func (*Action) Name() string {
+func (*snapcraft) Name() string {
 	return "snapcraft"
 }
 
-// GetInitConfig return what a good starting config would be.
-func (*Action) GetInitConfig() map[string]interface{} {
+func (*snapcraft) GetInitConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"assets": []string{
 			"./build/bin/linux_amd64/letitgo",
@@ -35,13 +38,11 @@ func (*Action) GetInitConfig() map[string]interface{} {
 	}
 }
 
-// Weight return in what order this action should be handled.
-func (*Action) Weight() int {
+func (*snapcraft) Weight() int {
 	return 110
 }
 
-// Execute handles the action.
-func (c *Action) Execute(cfg config.LetItGoConfig) error {
+func (c *snapcraft) Execute(cfg config.LetItGoConfig) error {
 	if _, err := exec.LookPath("snapcraft"); err != nil {
 		return errors.New("snapcraft binary not installed")
 	}

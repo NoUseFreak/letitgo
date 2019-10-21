@@ -6,7 +6,7 @@ import (
 )
 
 func TestAssetConfig_GetFiles(t *testing.T) {
-	root := "../../../"
+	root := "../../../../"
 	tests := []struct {
 		name string
 		a    assetConfig

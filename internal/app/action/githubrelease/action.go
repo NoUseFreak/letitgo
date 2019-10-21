@@ -1,12 +1,17 @@
 package githubrelease
 
 import (
+	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 )
 
-// Action creates a release and attaches any given artifacts.
-type Action struct {
+// New returns an action for githubrelease
+func New() action.Action {
+	return &githubrelease{}
+}
+
+type githubrelease struct {
 	Owner string
 	Repo  string
 
@@ -16,25 +21,21 @@ type Action struct {
 	Assets []assetConfig
 }
 
-// Name return the name of the action.
-func (*Action) Name() string {
+func (*githubrelease) Name() string {
 	return "githubrelease"
 }
 
-// GetInitConfig return what a good starting config would be.
-func (*Action) GetInitConfig() map[string]interface{} {
+func (*githubrelease) GetInitConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"assets": []string{"./build/*"},
 	}
 }
 
-// Weight return in what order this action should be handled.
-func (*Action) Weight() int {
+func (*githubrelease) Weight() int {
 	return 20
 }
 
-// Execute handles the action.
-func (c *Action) Execute(cfg config.LetItGoConfig) error {
+func (c *githubrelease) Execute(cfg config.LetItGoConfig) error {
 	templateProps(c, &cfg)
 
 	if c.Owner == "" || c.Repo == "" {

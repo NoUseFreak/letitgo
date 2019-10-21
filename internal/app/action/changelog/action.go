@@ -3,37 +3,38 @@ package changelog
 import (
 	"fmt"
 
+	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"gopkg.in/src-d/go-git.v4"
 )
 
-// Action calculates a changelog for the current project.
-type Action struct {
+// New returns an action for changelog
+func New() action.Action {
+	return &changelog{}
+}
+
+type changelog struct {
 	File    string
 	Message string
 }
 
-// Name return the name of the action.
-func (a *Action) Name() string {
+func (a *changelog) Name() string {
 	return "changelog"
 }
 
-// GetInitConfig return what a good starting config would be.
-func (a *Action) GetInitConfig() map[string]interface{} {
+func (a *changelog) GetInitConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"file": "CHANGELOG.md",
 	}
 }
 
-// Weight return in what order this action should be handled.
-func (a *Action) Weight() int {
+func (a *changelog) Weight() int {
 	return 5
 }
 
-// Execute handles the action.
-func (a *Action) Execute(cfg config.LetItGoConfig) error {
+func (a *changelog) Execute(cfg config.LetItGoConfig) error {
 	if a.File == "" {
 		a.File = "CHANGELOG.md"
 	}

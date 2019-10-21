@@ -2,7 +2,6 @@ package archive
 
 import (
 	"archive/zip"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -10,24 +9,28 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
+	"github.com/pkg/errors"
 )
 
-// Action can package a directory into an archive.
-type Action struct {
+// New returns an action for archive
+func New() action.Action {
+	return &archive{}
+}
+
+type archive struct {
 	Source string
 	Target string
 	Extras []string
 	Method string
 }
 
-// Name return the name of the action.
-func (*Action) Name() string {
+func (*archive) Name() string {
 	return "archive"
 }
 
-// GetInitConfig return what a good starting config would be.
-func (*Action) GetInitConfig() map[string]interface{} {
+func (*archive) GetInitConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"source": "./build/bin/*",
 		"target": "./build/pkg/",
@@ -36,13 +39,11 @@ func (*Action) GetInitConfig() map[string]interface{} {
 	}
 }
 
-// Weight return in what order this action should be handled.
-func (*Action) Weight() int {
+func (*archive) Weight() int {
 	return 12
 }
 
-// Execute handles the action.
-func (c *Action) Execute(cfg config.LetItGoConfig) error {
+func (c *archive) Execute(cfg config.LetItGoConfig) error {
 	if c.Method == "" {
 		c.Method = "zip"
 	}
@@ -62,7 +63,7 @@ func (c *Action) Execute(cfg config.LetItGoConfig) error {
 		switch c.Method {
 		case "zip":
 			if err := zipCreate(dir, target, c.Extras); err != nil {
-				return err
+				return errors.Wrap(err, "zipCreate failed")
 			}
 		default:
 			return errors.New("Unknown method")

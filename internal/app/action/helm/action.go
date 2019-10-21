@@ -5,24 +5,27 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 )
 
-// Action can package and publish helm charts.
-type Action struct {
+// New returns an action for helm
+func New() action.Action {
+	return &helm{}
+}
+
+type helm struct {
 	Charts     []string
 	BuildDir   string
 	Repository string
 }
 
-// Name return the name of the action.
-func (*Action) Name() string {
+func (*helm) Name() string {
 	return "helm"
 }
 
-// GetInitConfig return what a good starting config would be.
-func (*Action) GetInitConfig() map[string]interface{} {
+func (*helm) GetInitConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"charts":     []string{"./charts/my-chart"},
 		"builddir":   "./build/helm",
@@ -30,13 +33,11 @@ func (*Action) GetInitConfig() map[string]interface{} {
 	}
 }
 
-// Weight return in what order this action should be handled.
-func (*Action) Weight() int {
+func (*helm) Weight() int {
 	return 120
 }
 
-// Execute handles the action.
-func (c *Action) Execute(cfg config.LetItGoConfig) error {
+func (c *helm) Execute(cfg config.LetItGoConfig) error {
 	if c.BuildDir == "" {
 		c.BuildDir = "./build/helm"
 	}

@@ -5,12 +5,12 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 )
 
-func templateProps(c *Action, cfg *config.LetItGoConfig) {
+func templateProps(c *githubrelease, cfg *config.LetItGoConfig) {
 	utils.TemplateProperty(&c.Title, c, cfg)
 	utils.TemplateProperty(&c.Description, c, cfg)
 }
 
-func resolveOwnerRepo(c *Action) error {
+func resolveOwnerRepo(c *githubrelease) error {
 	repo, err := utils.GetRemote(".")
 	if err != nil {
 		return err

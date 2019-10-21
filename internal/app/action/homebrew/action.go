@@ -4,13 +4,19 @@ import (
 	"fmt"
 	"path"
 
+	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	"github.com/pkg/errors"
 )
 
-// Action creates or updates a homebrew tap.
-type Action struct {
+// New returns an action for homebrew
+func New() action.Action {
+	return &homebrew{}
+}
+
+type homebrew struct {
 	Homepage string
 
 	URL string
@@ -18,19 +24,17 @@ type Action struct {
 	Dependencies []string
 	Conflicts    []string
 
-	Tap     TapConfig
+	Tap     tapConfig
 	Folder  string
 	Install string
 	Test    string
 }
 
-// Name return the name of the action.
-func (*Action) Name() string {
+func (*homebrew) Name() string {
 	return "homebrew"
 }
 
-// GetInitConfig return what a good starting config would be.
-func (*Action) GetInitConfig() map[string]interface{} {
+func (*homebrew) GetInitConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"homepage": "https://example.com",
 		"url":      "https://github.com/owner/repo/releases/download/{{ .Version }}/darwin_amd64.zip",
@@ -40,18 +44,16 @@ func (*Action) GetInitConfig() map[string]interface{} {
 	}
 }
 
-// Weight return in what order this action should be handled.
-func (*Action) Weight() int {
+func (*homebrew) Weight() int {
 	return 100
 }
 
-// Execute handles the action.
-func (c *Action) Execute(cfg config.LetItGoConfig) error {
+func (c *homebrew) Execute(cfg config.LetItGoConfig) error {
 	setDefaults(c)
 	templateProps(c, &cfg)
 	hash, err := utils.BuildURLHash("sha256", c.URL)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "Failed to build hash for %s", c.URL)
 	}
 
 	content, err := utils.Template(homebrewTpl, cfg, &c, map[string]string{

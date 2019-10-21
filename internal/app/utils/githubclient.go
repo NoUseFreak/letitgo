@@ -2,11 +2,12 @@ package utils
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/google/go-github/github"
@@ -64,7 +65,7 @@ func (c *GithubClient) CreateRelease(version, title, description string) (int64,
 	})
 
 	if err != nil {
-		return -1, err
+		return -1, errors.Wrap(err, "Failed creating release.")
 	}
 
 	return release.GetID(), err
@@ -73,7 +74,7 @@ func (c *GithubClient) CreateRelease(version, title, description string) (int64,
 // UploadAssets uploads multiple assets to a given release.
 func (c *GithubClient) UploadAssets(releaseID int64, assets []string) error {
 	if err := c.init(); err != nil {
-		return err
+		return errors.Wrap(err, "Failed to init client")
 	}
 	if DryRun {
 		return &e.SkipError{
@@ -84,7 +85,7 @@ func (c *GithubClient) UploadAssets(releaseID int64, assets []string) error {
 
 	for _, f := range assets {
 		if err := c.UploadAsset(releaseID, f); err != nil {
-			return err
+			return errors.Wrap(err, "Failed to upload asset")
 		}
 	}
 
@@ -95,7 +96,7 @@ func (c *GithubClient) UploadAssets(releaseID int64, assets []string) error {
 func (c *GithubClient) UploadAsset(releaseID int64, asset string) error {
 	ui.Step("Uploading %s", asset)
 	if err := c.init(); err != nil {
-		return err
+		return errors.Wrap(err, "Failed to init client")
 	}
 	ui.Debug("Uploading %s", asset)
 	if DryRun {
@@ -120,7 +121,7 @@ func (c *GithubClient) uploadAsset(rID int64, path string) error {
 	ui.Trace("Uploading %s", path)
 	file, err := os.Open(path)
 	if err != nil {
-		panic(err)
+		return errors.Wrapf(err, "Failed to open file %v", path)
 	}
 	defer file.Close()
 

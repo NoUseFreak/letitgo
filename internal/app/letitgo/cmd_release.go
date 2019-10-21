@@ -4,6 +4,7 @@ import (
 	"os"
 	"sort"
 
+	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
@@ -31,7 +32,7 @@ func executeRelease(cmd *cobra.Command, args []string) {
 	utils.ParseYamlFile(".release.yml", &cfgWrapper)
 	cfg := cfgWrapper.LetItGo
 
-	var workload Actions
+	var workload action.Actions
 	for _, a := range cfg.Actions {
 		actionType := a["type"].(string)
 		if action := getActions()[actionType]; action != nil {
@@ -42,7 +43,7 @@ func executeRelease(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	sort.Sort(ByWeight{workload})
+	sort.Sort(action.ByWeight{workload})
 
 	version := getVersion(args)
 

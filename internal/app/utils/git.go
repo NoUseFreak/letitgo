@@ -2,7 +2,7 @@ package utils
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 	"net/url"
 	"os"
 	"os/exec"
@@ -39,7 +39,7 @@ func Run(args ...string) (string, error) {
 func PublishFile(repoURL, path, content, message string) error {
 	url, err := giturls.Parse(repoURL)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed parsing giturl")
 	}
 
 	switch url.Hostname() {
@@ -104,19 +104,19 @@ func publishFileGithub(url *url.URL, path, content, message string) error {
 		},
 	)
 
-	return err
+	return errors.Wrap(err, "Failed creating file")
 }
 
 // GetRemote looks at the given directory and returns the first git-remote name.
 func GetRemote(dir string) (string, error) {
 	repo, err := git.PlainOpen(dir)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "Failed opening git repo")
 	}
 
 	remotes, err := repo.Remotes()
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "Failed reading remotes")
 	}
 
 	if len(remotes) > 1 {

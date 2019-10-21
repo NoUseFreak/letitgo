@@ -5,7 +5,7 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 )
 
-func setDefaults(c *Action) {
+func setDefaults(c *homebrew) {
 	if c.Folder == "" {
 		c.Folder = "Formula"
 	}
@@ -14,7 +14,7 @@ func setDefaults(c *Action) {
 	}
 }
 
-func templateProps(c *Action, cfg *config.LetItGoConfig) {
+func templateProps(c *homebrew, cfg *config.LetItGoConfig) {
 	utils.TemplateProperty(&c.URL, c, cfg)
 	utils.TemplateProperty(&c.Install, c, cfg)
 	utils.TemplateProperty(&c.Test, c, cfg)
