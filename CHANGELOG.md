@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.2 (October 21, 2019)
+
+- Fix absolute path in archive
+
+
 ## 0.6.1 (October 21, 2019)
 
 - Ignore duplicate entries in release blocks
@@ -80,6 +85,5 @@
 
 - Group and default to main config
 - Text fix
-- Add docs for each action
 
 
