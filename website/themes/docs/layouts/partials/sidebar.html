@@ -3,11 +3,12 @@
         <ul class="uk-nav uk-nav-default" uk-scrollspy-nav="closest: li" uk-sticky="media: @m; offset: 110">
             {{ with .Sections }}
                 {{ range .ByWeight }}
+                    {{ $id := .Title | lower }}
                     <li class="uk-nav-header">
-                        <a href="#{{ .Title | lower }}">{{ .Title }}</a>
+                        <a href="#{{ $id }}">{{ .Title }}</a>
                     </li>
                     {{ range .Pages.ByWeight }}
-                        <li><a href="#{{ .File | path.Base }}">{{ .Title }}</a></li>
+                        <li><a href="#{{ $id }}-{{ .File | path.Base }}">{{ .Title }}</a></li>
                     {{ end }}
                 {{ end }}
             {{ end }}

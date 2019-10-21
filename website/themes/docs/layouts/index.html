@@ -72,14 +72,15 @@
                     
                     {{ with .Sections }}
                         {{ range .ByWeight }}
+                            {{ $id := .Title | lower }}
                             <section class="tm-section">
-                                <h2 id="{{ .Title | lower }}">{{ .Title }}</h2>
+                                <h2 id="{{ $id }}">{{ .Title }}</h2>
                                 {{ .Content }}
                             </section>
                             <hr class="uk-margin-large">
                             {{ range .Pages.ByWeight }}
                                 <section class="tm-section">
-                                    <h3 id="{{ .File | path.Base }}">{{ .Title }}</h3>
+                                    <h3 id="{{ $id }}-{{ .File | path.Base }}">{{ .Title }}</h3>
                                     {{ .Content }}
                                 </section>
                                 <hr class="uk-margin-large">
