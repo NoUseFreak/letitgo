@@ -12,7 +12,8 @@ Since 0.5.0 the config format changed. The goal is to keep it stable. But this i
 
 ### Example
 
-This example shows a few of the features for LetItGo. 
+This example `.release.yml` shows a few of the features for LetItGo. 
+
 
 ```yaml
 letitgo:
@@ -31,4 +32,10 @@ letitgo:
       tap:
         url: git@github.com:NoUseFreak/homebrew-brew.git
       test: system "#{bin}/{{ .Name }} -h"
+```
+
+You can now run LetItGo and make it run the actions.
+
+```bash
+$ letitgo release
 ```
