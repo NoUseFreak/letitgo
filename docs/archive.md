@@ -2,6 +2,8 @@
 title: "Archive"
 ---
 
+Creates archives of your artifacts.
+
 #### Configuration
 
 Parameter | Description | Default

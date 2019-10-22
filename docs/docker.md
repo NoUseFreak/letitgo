@@ -2,6 +2,8 @@
 title: "Docker"
 ---
 
+Builds, tags and pushes docker images.
+
 #### Prerequisites
 
 - Requires `DOCKER_AUTH_PASSWORD` to be set in the environment.

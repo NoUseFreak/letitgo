@@ -2,6 +2,8 @@
 title: "Snapcraft"
 ---
 
+Package and upload your snap to snapcraft.
+
 #### Prerequisites
 
 - Requires `snapcraft` to be installed and logged in.

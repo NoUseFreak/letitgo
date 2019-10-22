@@ -68,6 +68,7 @@ Action | Description
 --- | ---
 archive | Create archives of files.
 changelog | Generate a changelog and commit it to your project.
+docker | Builds, tags and pushes docker images.
 githubrelease | Publish generated artifacts and attach them to a github release.
 helm | Package and/or publish helm charts to a registry like chartmuseum.
 homebrew | Update your personal homebrew tap with your latest config.

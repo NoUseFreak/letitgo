@@ -2,6 +2,8 @@
 title: "Helm"
 ---
 
+Package and/or publish helm charts to a registry like chartmuseum.
+
 #### Prerequisites
 
 - Requires `helm` to be installed.
