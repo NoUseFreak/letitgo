@@ -77,7 +77,7 @@ func (c *docker) Execute(cfg config.LetItGoConfig) error {
 		return err
 	}
 
-	if utils.DryRun {
+	if utils.DryRun.IsEnabled() {
 		return &e.SkipError{
 			Reason: "dryrun",
 			Part:   "push images",

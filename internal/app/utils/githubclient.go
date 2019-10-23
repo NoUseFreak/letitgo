@@ -55,7 +55,7 @@ func (c *GithubClient) CreateRelease(version, title, description string) (int64,
 	}
 
 	ui.Step("Creating release")
-	if DryRun {
+	if DryRun.IsEnabled() {
 		return -1, nil
 	}
 	release, _, err = c.client.Repositories.CreateRelease(c.ctx, c.Owner, c.Repo, &github.RepositoryRelease{
@@ -76,7 +76,7 @@ func (c *GithubClient) UploadAssets(releaseID int64, assets []string) error {
 	if err := c.init(); err != nil {
 		return errors.Wrap(err, "Failed to init client")
 	}
-	if DryRun {
+	if DryRun.IsEnabled() {
 		return &e.SkipError{
 			Reason: "dryrun",
 			Part:   fmt.Sprintf("Upload assets %s", strings.Join(assets, ", ")),
@@ -99,7 +99,7 @@ func (c *GithubClient) UploadAsset(releaseID int64, asset string) error {
 		return errors.Wrap(err, "Failed to init client")
 	}
 	ui.Debug("Uploading %s", asset)
-	if DryRun {
+	if DryRun.IsEnabled() {
 		return &e.SkipError{
 			Reason: "dryrun",
 			Part:   fmt.Sprintf("Upload asset %s", asset),

@@ -23,7 +23,7 @@ func (h *Helm) Package(chart, target, version string) error {
 	if _, err := os.Stat(target); os.IsNotExist(err) {
 		os.MkdirAll(target, 0755)
 	}
-	if DryRun {
+	if DryRun.IsEnabled() {
 		return &e.SkipError{
 			Reason: "dryrun",
 			Part:   fmt.Sprintf("Packaging %s", path.Base(chart)),
@@ -43,7 +43,7 @@ func (h *Helm) Publish(artifact, repository string) error {
 	}
 	u.Path = "/api/charts"
 
-	if DryRun {
+	if DryRun.IsEnabled() {
 		return &e.SkipError{
 			Reason: "dryrun",
 			Part:   fmt.Sprintf("Publishing %s", path.Base(artifact)),

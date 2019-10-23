@@ -2,12 +2,13 @@ package utils
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/google/go-github/github"
@@ -51,7 +52,7 @@ func PublishFile(repoURL, path, content, message string) error {
 }
 
 func publishFileGithub(url *url.URL, path, content, message string) error {
-	if DryRun {
+	if DryRun.IsEnabled() {
 		return &e.SkipError{
 			Part:   "Publish file to github",
 			Reason: "dryrun",

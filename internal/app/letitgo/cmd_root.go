@@ -20,9 +20,13 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	logrus.SetLevel(logrus.InfoLevel)
-	rootCmd.PersistentFlags().BoolVarP(&utils.DryRun, "dry-run", "d", false, "Enable dry-run")
+	rootCmd.PersistentFlags().BoolP("dry-run", "d", false, "Enable dry-run")
 	rootCmd.PersistentFlags().String("loglevel", "info", "Log level")
 	rootCmd.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
+		if dryRun, _ := cmd.Flags().GetBool("dry-run"); dryRun {
+			utils.DryRun.Enable()
+		}
+
 		lvlString, _ := cmd.PersistentFlags().GetString("loglevel")
 		lvl, err := logrus.ParseLevel(lvlString)
 		if err == nil {
