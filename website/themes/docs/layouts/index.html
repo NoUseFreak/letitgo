@@ -63,10 +63,66 @@
             padding: 2px 0;
             border-bottom: 1px solid #e5e5e5;
         }
+        pre .uk-icon {
+            padding: 7px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .tm-dark {
+            background-color: #333;
+            color: #eee;
+        }
+        .tm-dark .uk-tile-primary {
+            background-color: #1a456f;
+        }
+        .tm-dark h2 a, 
+        .tm-dark h2 a:hover, 
+        .tm-dark h2 a:visited, 
+        .tm-dark h2 a:active, 
+        .tm-dark h3 a, 
+        .tm-dark h3 a:hover, 
+        .tm-dark h3 a:visited, 
+        .tm-dark h3 a:active,
+        .tm-dark h2, 
+        .tm-dark h3, 
+        .tm-dark h4, 
+        .tm-dark h5, 
+        .tm-dark h6 {
+            color: #fff;
+        }
+        .tm-dark :not(pre)>code, 
+        .tm-dark :not(pre)>kbd, 
+        .tm-dark :not(pre)>samp {
+            background: #272822;
+            color: #a6e22e;
+        }
+        .tm-dark .uk-table-striped tbody tr:nth-of-type(odd), 
+        .tm-dark .uk-table-striped>tr:nth-of-type(odd) {
+            background-color: #444;
+        }
+        .tm-dark .tm-sidebar {
+            background-color: #1d1d1d;
+        }
+        .tm-dark .uk-nav-default > li.uk-active > a {
+            color: #cecece;
+        }
+        .tm-dark .uk-alert-warning {
+            background-color: #884000;
+            color: #fff;
+        }
+        .tm-dark-mode-toggle {
+            position: fixed;
+            top: 83px;
+            right: 20px;
+        }
+        .tm-dark .uk-card {
+            border-color: #000;
+        }
     </style>
 </head>
 <body>
-
     <div>
         <div uk-sticky class="uk-tile-primary">
             <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
@@ -85,7 +141,6 @@
             
             <div class="uk-width-expand@m uk-padding-small">
                 <div class="uk-padding-large">
-                    
                     {{ with .Sections }}
                         {{ range .ByWeight }}
                             {{ $id := .Title | lower }}
@@ -115,18 +170,55 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
+            // Make table pretty
             document.querySelectorAll("table").forEach((element) => {
                 element.classList.add("uk-table", "uk-table-striped", "uk-table-justify", "uk-table-small");
             });
 
+            // Make code examples pretty
             document.querySelectorAll("pre").forEach((element) => {
                 element.classList.add("uk-card", "uk-card-default", "uk-padding-remove");
             });
+            document.querySelectorAll('pre code').forEach((element) => {
+                hljs.highlightBlock(element);
 
-            document.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightBlock(block);
+                // Add copy to clipboard button
+                var a = document.createElement('a');
+                a.setAttribute("uk-icon", "icon: copy");
+                a.addEventListener('click', (e) => {
+                    try {
+                        var ta = document.createElement("textarea");
+                        element.appendChild(ta);
+                        ta.value = element.textContent;
+                        ta.focus();
+                        ta.setSelectionRange(0, ta.value.length);
+                        document.execCommand('copy');
+                        ta.remove();
+                        a.setAttribute("uk-tooltip", "title: Copied!");
+                        UIkit.tooltip(a).show();
+                    } catch (err) {
+                        console.log(err);
+                    }
+                });
+                element.parentElement.appendChild(a);
             });
+
+            // Support dark mode
+            new Darkmode().showWidget();
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                const body = document.getElementsByTagName("body")[0]
+                body.classList.add("tm-dark");
+
+                var a = document.createElement('a');
+                a.setAttribute("uk-icon", "icon: paint-bucket");
+                a.classList.add("tm-dark-mode-toggle");
+                body.appendChild(a);
+                a.addEventListener("click", (e) => {
+                    body.classList.toggle("tm-dark");
+                });
+            }
         });
+
     </script>
 </body>
 </html>
