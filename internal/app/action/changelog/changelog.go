@@ -1,122 +1,81 @@
 package changelog
 
 import (
-	"bytes"
 	"fmt"
-	"strings"
-	"text/template"
-	"time"
 
-	"github.com/Masterminds/sprig"
+	"github.com/NoUseFreak/letitgo/internal/app/action"
+	"github.com/NoUseFreak/letitgo/internal/app/config"
+	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"gopkg.in/src-d/go-git.v4"
-	"gopkg.in/src-d/go-git.v4/plumbing"
-	"gopkg.in/src-d/go-git.v4/plumbing/object"
 )
 
-func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock, error) {
-	ref, err := repo.Head()
-	if err != nil {
-		return nil, fmt.Errorf("Failed to find HEAD - %s", err.Error())
+// New returns an action for changelog
+func New() action.Action {
+	return &changelog{}
+}
+
+type changelog struct {
+	File    string
+	Message string
+}
+
+func (a *changelog) Name() string {
+	return "changelog"
+}
+
+func (a *changelog) GetInitConfig() map[string]interface{} {
+	return map[string]interface{}{
+		"file": "CHANGELOG.md",
+	}
+}
+
+func (a *changelog) Weight() int {
+	return 5
+}
+
+func (a *changelog) Execute(cfg config.LetItGoConfig) error {
+	if a.File == "" {
+		a.File = "CHANGELOG.md"
+	}
+	if a.Message == "" {
+		a.Message = "Update changelog\n[skip ci]"
 	}
 
-	tags := map[string]*plumbing.Reference{}
-	tagrefs, _ := repo.Tags()
-	tagrefs.ForEach(func(t *plumbing.Reference) error {
-		tags[t.Hash().String()] = t
+	r, err := git.PlainOpen(".")
+	if err != nil {
+		return fmt.Errorf("Unable to find git repo - %s", err.Error())
+	}
+
+	if lastCommitIsChangelog(r, a.Message, a.File) {
+		ui.Info("Skipping changelog")
 		return nil
-	})
+	}
 
-	cIter, err := repo.Log(&git.LogOptions{
-		From:  ref.Hash(),
-		Order: git.LogOrderCommitterTime,
-	})
+	tree, err := buildReleaseBlocks(r, []string{a.Message})
 	if err != nil {
-		return nil, fmt.Errorf("Failed to fetch log - %s", err.Error())
+		return fmt.Errorf("Unable to build release blocks - %s", err.Error())
 	}
 
-	tree := []releaseBlock{{
-		Tag:     "unreleased",
-		Commits: []commit{},
-	}}
-	last := 0
-
-	cIter.ForEach(func(c *object.Commit) error {
-		if tag, ok := tags[c.Hash.String()]; ok {
-			last++
-			tree = append(tree, releaseBlock{
-				Tag:     tag.Name().Short(),
-				Date:    &c.Committer.When,
-				Ref:     tag,
-				Commits: []commit{},
-			})
-		}
-		for _, ig := range ignore {
-			if ig == c.Message {
-				return nil
-			}
-		}
-		for _, pc := range tree[last].Commits {
-			if pc.Message == c.Message {
-				return nil
-			}
-		}
-		tree[last].Commits = append(tree[last].Commits, newCommit(c))
-		return nil
-	})
-
-	return &tree, nil
-}
-
-func newCommit(c *object.Commit) commit {
-	commit := commit{
-		Message:      c.Message,
-		MessageShort: strings.Split(utils.NormalizeNewlines(c.Message), "\n")[0],
-		Hash:         c.Hash.String(),
+	vars := struct {
+		Blocks []releaseBlock
+	}{
+		Blocks: *tree,
 	}
-
-	return commit
-}
-
-type releaseBlock struct {
-	Tag     string
-	Date    *time.Time
-	Ref     *plumbing.Reference
-	Commits []commit
-}
-
-type commit struct {
-	Message      string
-	MessageShort string
-	Hash         string
-}
-
-func templateChangelog(vars interface{}) (string, error) {
-	tpl := template.Must(template.New("main").Parse(changelogTpl))
-	tpl.Funcs(sprig.TxtFuncMap())
-	template.Must(tpl.New("block").Parse(blockTpl))
-
-	var out bytes.Buffer
-	if err := tpl.Execute(&out, vars); err != nil {
-		return "", err
-	}
-
-	return out.String(), nil
-}
-
-func lastCommitIsChangelog(r *git.Repository, msg, file string) bool {
-	ref, err := r.Head()
+	out, err := templateChangelog(vars)
 	if err != nil {
-		return false
+		return fmt.Errorf("Unable to template changelog - %s", err.Error())
 	}
-	commit, err := r.CommitObject(ref.Hash())
+
+	repo, err := utils.GetRemote(".")
 	if err != nil {
-		return false
+		return fmt.Errorf("Unable to resolve remote - %s", err.Error())
 	}
 
-	if f, _ := commit.File(file); f == nil {
-		return false
-	}
+	ui.Trace(out)
 
-	return commit.Message == msg
+	ui.Step("Publishing %s", a.File)
+
+	utils.WriteFile(a.File, out)
+	return utils.PublishFile(repo, a.File, out, a.Message)
 }
