@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 
@@ -14,6 +15,7 @@ import (
 	"golang.org/x/oauth2"
 
 	e "github.com/NoUseFreak/letitgo/internal/app/errors"
+	try "gopkg.in/matryer/try.v1"
 )
 
 // GithubClient handles github api interactions.
@@ -107,6 +109,104 @@ func (c *GithubClient) UploadAsset(releaseID int64, asset string) error {
 	}
 
 	return c.uploadAsset(releaseID, asset)
+}
+
+func (c *GithubClient) RepoExists() error {
+	if err := c.init(); err != nil {
+		return errors.Wrap(err, "Failed to init client")
+	}
+	_, _, err := c.client.Repositories.Get(c.ctx, c.Owner, c.Repo)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *GithubClient) CreateForkFrom(owner, repo string) error {
+	if err := c.init(); err != nil {
+		return errors.Wrap(err, "Failed to init client")
+	}
+
+	_, _, err := c.client.Repositories.CreateFork(c.ctx, owner, repo, &github.RepositoryCreateForkOptions{})
+
+	if _, ok := err.(*github.AcceptedError); !ok {
+		if err != nil {
+			return errors.Wrapf(err, "Failed to fork %s/%s to %s/%s", owner, repo, c.Owner, repo)
+		}
+	}
+
+	err = try.Do(func(attempt int) (bool, error) {
+		time.Sleep(5 * time.Second)
+		return attempt < 6, c.RepoExists() // try 5 times
+	})
+
+	return errors.Wrap(err, "Failed to verify fork got created.")
+}
+
+func (c *GithubClient) PublishFile(path, content, message, branch string) error {
+	if err := c.init(); err != nil {
+		return errors.Wrap(err, "Failed to init client")
+	}
+
+	if branch != "" {
+		// create branch
+		ref := fmt.Sprintf("heads/%s", branch)
+
+		r, _, _ := c.client.Git.GetRef(c.ctx, c.Owner, c.Repo, ref)
+		if r == nil {
+			r, _, err := c.client.Git.GetRef(c.ctx, c.Owner, c.Repo, "heads/master")
+			if err != nil {
+				return errors.Wrap(err, "Failed to find master branch sha")
+			}
+
+			_, _, err = c.client.Git.CreateRef(c.ctx, c.Owner, c.Repo, &github.Reference{
+				Ref:    &ref,
+				Object: r.GetObject(),
+			})
+
+			if err != nil {
+				return errors.Wrapf(err, "Failed to create branch %s on %s/%s", branch, c.Owner, c.Repo)
+			}
+		}
+	}
+
+	var sha string
+	opts := github.RepositoryContentGetOptions{}
+	if branch != "" {
+		opts.Ref = branch
+	}
+	fileContent, _, _, err := c.client.Repositories.GetContents(
+		c.ctx,
+		c.Owner,
+		c.Repo,
+		path,
+		&opts,
+	)
+	if err == nil {
+		if oldContent, err := fileContent.GetContent(); err == nil {
+			if oldContent == content {
+				ui.Step("No changes to %s", path)
+				return nil
+			}
+		}
+		sha = fileContent.GetSHA()
+	}
+
+	_, _, err = c.client.Repositories.CreateFile(
+		c.ctx,
+		c.Owner,
+		c.Repo,
+		path,
+		&github.RepositoryContentFileOptions{
+			SHA:     &sha,
+			Message: &message,
+			Content: []byte(content),
+			Branch:  &branch,
+		},
+	)
+
+	return errors.Wrapf(err, "Failed to publish file %s", path)
 }
 
 func (c *GithubClient) ghClient(token string) *github.Client {
