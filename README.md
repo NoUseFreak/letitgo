@@ -70,6 +70,7 @@ archive | Create archives of files.
 changelog | Generate a changelog and commit it to your project.
 docker | Builds, tags and pushes docker images.
 githubrelease | Publish generated artifacts and attach them to a github release.
+gofish | Creates a PR to update the gofish fish-food.
 helm | Package and/or publish helm charts to a registry like chartmuseum.
 homebrew | Update your personal homebrew tap with your latest config.
 snapcraft | Package and upload your snap to snapcraft.
