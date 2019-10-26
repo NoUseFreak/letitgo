@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.8.0 (October 26, 2019)
+
+- Add gofish info
+- Move files
+- Add gofish support
+- Make website support dark mode
+- Rework dry-run
+- Add more info to docs
+- Split example
+- Better example
+- Add example to website
+- Add GA
+- Add website title links
+- Fix website links
+
+
 ## 0.7.0 (October 21, 2019)
 
 - Fix docker image tagging
@@ -55,27 +71,5 @@
 - Refactor config format
 - Keep action info in one place
 - Add some info about init
-
-
-## 0.4.0 (October 15, 2019)
-
-- Create init script
-- Cleaner output
-
-
-## 0.3.0 (October 14, 2019)
-
-- Add helm package and publish support
-- Add updated example
-
-
-## 0.2.1 (October 14, 2019)
-
-- Make output pretty
-- Implement dryRun
-- Try to find version from git
-- Add link to all actions
-- Add snapcraft doc
-- Implement snapcraft
 
 
