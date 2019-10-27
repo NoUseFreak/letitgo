@@ -13,6 +13,10 @@ language: go
 go:
 - stable
 
+# git settings 
+git:
+  depth: false # Setting depth to all, needed for changelog generating.
+
 # deploy steps
 deploy:
 - provider: script
