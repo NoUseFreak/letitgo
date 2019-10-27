@@ -22,6 +22,12 @@ __Homebrew__
 brew install NoUseFreak/brew/letitgo
 letitgo --version
 ```
+__Gofish__
+
+```bash
+gofish install letitgo
+letitgo --version
+```
 
 __CLI__
 
