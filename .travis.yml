@@ -1,6 +1,8 @@
 language: go
 go:
 - stable
+git:
+  depth: false
 deploy:
 - provider: script
   skip_cleanup: true
