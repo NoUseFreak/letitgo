@@ -32,3 +32,6 @@ letitgo:
         - os: linux
           arch: amd64
           url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/linux_amd64.zip
+        - os: windows
+          arch: amd64
+          url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/windows_amd64.zip
