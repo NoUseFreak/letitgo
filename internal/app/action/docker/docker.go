@@ -1,16 +1,24 @@
 package docker
 
 import (
+	"context"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"os"
 
 	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	"github.com/pkg/errors"
 
 	e "github.com/NoUseFreak/letitgo/internal/app/errors"
-	dckr "github.com/fsouza/go-dockerclient"
+	dckrTypes "github.com/docker/docker/api/types"
+	dckr "github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/archive"
 )
 
 // New returns an action for docker
@@ -59,9 +67,9 @@ func (c *docker) Execute(cfg config.LetItGoConfig) error {
 		imageNames = append(imageNames, name)
 	}
 
-	client, err := dckr.NewClientFromEnv()
+	client, err := dckr.NewClientWithOpts(dckr.WithAPIVersionNegotiation(), dckr.FromEnv)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	ui.Step("Building image")
@@ -86,33 +94,41 @@ func (c *docker) Execute(cfg config.LetItGoConfig) error {
 	}
 
 	ui.Step("Pushing images")
-	c.pushImages(client, imageNames)
-	return nil
+	return c.pushImages(client, imageNames)
 }
 
 func (c *docker) buildImage(client *dckr.Client, imageName string) error {
 	wd, _ := os.Getwd()
-	r, w := newProgressWriter()
-	defer r.Close()
-	defer w.Close()
 
-	return client.BuildImage(dckr.BuildImageOptions{
-		ContextDir:   wd,
-		Dockerfile:   c.Dockerfile,
-		Name:         imageName,
-		OutputStream: w,
+	resp, err := client.ImageBuild(context.Background(), getContext(wd), dckrTypes.ImageBuildOptions{
+		SuppressOutput: false,
+		PullParent:     true,
+		Remove:         true,
+		Dockerfile:     c.Dockerfile,
+		Tags:           []string{imageName},
 	})
+	if err != nil {
+		return errors.Wrapf(err, "Failed to build %s", c.Dockerfile)
+	}
+	defer utils.DeferCheck(resp.Body.Close)
+
+	_, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	return err
+}
+
+func getContext(filePath string) io.Reader {
+	ctx, _ := archive.TarWithOptions(filePath, &archive.TarOptions{})
+	return ctx
 }
 
 func (c *docker) tagImages(client *dckr.Client, baseName string, imageNames []string) error {
 	for _, name := range imageNames {
 		ui.Step("Tagging image %s", name)
-		img := parseImageName(name)
-		err := client.TagImage(baseName, dckr.TagImageOptions{
-			Repo: img.Repo,
-			Tag:  img.Tag,
-		})
-		if err != nil {
+		if err := client.ImageTag(context.Background(), baseName, name); err != nil {
 			return err
 		}
 	}
@@ -121,27 +137,29 @@ func (c *docker) tagImages(client *dckr.Client, baseName string, imageNames []st
 }
 
 func (c *docker) pushImages(client *dckr.Client, imageNames []string) error {
-	var errs []error
-	r, w := newProgressWriter()
-	defer r.Close()
-	defer w.Close()
+	authConfig := dckrTypes.AuthConfig{
+		Username: c.Auth.Username,
+		Password: c.Auth.Password,
+	}
+	encodedJSON, err := json.Marshal(authConfig)
+	if err != nil {
+		panic(err)
+	}
+	authStr := base64.URLEncoding.EncodeToString(encodedJSON)
+
 	for _, name := range imageNames {
-		img := parseImageName(name)
-		err := client.PushImage(dckr.PushImageOptions{
-			Name:         img.Repo,
-			Tag:          img.Tag,
-			OutputStream: w,
-		}, dckr.AuthConfiguration{
-			Username: c.Auth.Username,
-			Password: c.Auth.Password,
+		out, err := client.ImagePush(context.Background(), name, dckrTypes.ImagePushOptions{
+			RegistryAuth: authStr,
 		})
 		if err != nil {
-			ui.Warn("Failed to push image - %v", err)
+			return err
+		}
+		defer utils.DeferCheck(out.Close)
+		_, err = ioutil.ReadAll(out)
+		if err != nil {
+			return err
 		}
 	}
 
-	if len(errs) > 0 {
-		return errs[0]
-	}
 	return nil
 }

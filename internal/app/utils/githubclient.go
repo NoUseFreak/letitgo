@@ -223,7 +223,7 @@ func (c *GithubClient) uploadAsset(rID int64, path string) error {
 	if err != nil {
 		return errors.Wrapf(err, "Failed to open file %v", path)
 	}
-	defer file.Close()
+	defer DeferCheck(file.Close)
 
 	_, _, err = c.client.Repositories.UploadReleaseAsset(c.ctx, c.Owner, c.Repo, rID, &github.UploadOptions{
 		Name: filepath.Base(path),

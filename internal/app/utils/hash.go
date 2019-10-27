@@ -23,7 +23,7 @@ func BuildURLHash(alg, url string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer resp.Body.Close()
+	defer DeferCheck(resp.Body.Close)
 
 	if resp.StatusCode != 200 {
 		return "", errors.New("Not found")

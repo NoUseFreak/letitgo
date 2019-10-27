@@ -37,8 +37,12 @@ func executeRelease(cmd *cobra.Command, args []string) {
 	for _, a := range cfg.Actions {
 		actionType := a["type"].(string)
 		if action := getActions()[actionType]; action != nil {
-			mapstructure.Decode(a, action)
-			mapstructure.Decode(cfg, action)
+			if err := mapstructure.Decode(a, action); err != nil {
+				ui.Error(err.Error())
+			}
+			if err := mapstructure.Decode(cfg, action); err != nil {
+				ui.Error(err.Error())
+			}
 			if err := env.Parse(action); err != nil {
 				ui.Warn("Failed to parse environment - %s", err.Error())
 			}

@@ -9,6 +9,7 @@ import (
 	"path"
 
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
+	"github.com/pkg/errors"
 
 	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 )
@@ -21,7 +22,9 @@ func (h *Helm) Package(chart, target, version string) error {
 	ui.Step("Packaging %s@%s", path.Base(chart), version)
 
 	if _, err := os.Stat(target); os.IsNotExist(err) {
-		os.MkdirAll(target, 0755)
+		if err := os.MkdirAll(target, 0755); err != nil {
+			return errors.Wrapf(err, "Failed to create dir %s", target)
+		}
 	}
 	if DryRun.IsEnabled() {
 		return &e.SkipError{

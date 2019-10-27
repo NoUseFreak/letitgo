@@ -76,6 +76,9 @@ func (a *changelog) Execute(cfg config.LetItGoConfig) error {
 
 	ui.Step("Publishing %s", a.File)
 
-	utils.WriteFile(a.File, out)
+	if err := utils.WriteFile(a.File, out); err != nil {
+		return err
+	}
+
 	return utils.PublishFile(repo, a.File, out, a.Message)
 }

@@ -37,7 +37,10 @@ func executeInit(cmd *cobra.Command, args []string) {
 	_, err = os.Stat(cfgFile)
 	if os.IsNotExist(err) {
 		ui.Phase("Creating config")
-		ioutil.WriteFile(cfgFile, []byte(content), 0644)
+		if err := ioutil.WriteFile(cfgFile, []byte(content), 0644); err != nil {
+			ui.Error(err.Error())
+			os.Exit(1)
+		}
 		os.Exit(0)
 	}
 
@@ -47,12 +50,12 @@ func executeInit(cmd *cobra.Command, args []string) {
 
 func getData() (string, error) {
 	name := ""
-	survey.AskOne(&survey.Input{
+	_ = survey.AskOne(&survey.Input{
 		Message: "Project name",
 	}, &name)
 
 	description := ""
-	survey.AskOne(&survey.Input{
+	_ = survey.AskOne(&survey.Input{
 		Message: "Project description",
 	}, &description)
 
@@ -91,7 +94,7 @@ func getData() (string, error) {
 
 func askEnableAction(name string) bool {
 	response := false
-	survey.AskOne(&survey.Confirm{
+	_ = survey.AskOne(&survey.Confirm{
 		Message: fmt.Sprintf("Enable action %s", name),
 		Default: true,
 	}, &response)

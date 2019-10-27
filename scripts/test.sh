@@ -9,4 +9,9 @@ DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 
 cd "$DIR"
 
+echo "Running tests..."
 go test ./...
+
+echo "Running errcheck..."
+(cd /tmp && go get -u github.com/kisielk/errcheck)
+errcheck  ./...

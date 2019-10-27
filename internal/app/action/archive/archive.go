@@ -11,6 +11,7 @@ import (
 
 	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
+	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/pkg/errors"
 )
 
@@ -75,20 +76,22 @@ func (c *archive) Execute(cfg config.LetItGoConfig) error {
 
 func zipCreate(source, target string, extras []string) error {
 	for _, extra := range extras {
-		copyFile(
+		if err := copyFile(
 			path.Join(".", extra),
 			path.Join(source, extra),
-		)
+		); err != nil {
+			return errors.Wrapf(err, "Failed to copy %s", extra)
+		}
 	}
 
 	zipfile, err := os.Create(target)
 	if err != nil {
 		return err
 	}
-	defer zipfile.Close()
+	defer utils.DeferCheck(zipfile.Close)
 
 	archive := zip.NewWriter(zipfile)
-	defer archive.Close()
+	defer utils.DeferCheck(archive.Close)
 
 	info, err := os.Stat(source)
 	if err != nil {
@@ -101,7 +104,7 @@ func zipCreate(source, target string, extras []string) error {
 	}
 	baseDir = filepath.Base(source)
 
-	filepath.Walk(source, func(path string, info os.FileInfo, err error) error {
+	return filepath.Walk(source, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -110,8 +113,6 @@ func zipCreate(source, target string, extras []string) error {
 		}
 		return zipAddFile(archive, baseDir, info, path, source)
 	})
-
-	return err
 }
 
 func zipAddFile(archive *zip.Writer, baseDir string, info os.FileInfo, path, source string) error {
@@ -143,7 +144,7 @@ func zipAddFile(archive *zip.Writer, baseDir string, info os.FileInfo, path, sou
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	defer utils.DeferCheck(file.Close)
 	_, err = io.Copy(writer, file)
 
 	return err
@@ -159,13 +160,13 @@ func copyFile(source, target string) error {
 	if err != nil {
 		return err
 	}
-	defer from.Close()
+	defer utils.DeferCheck(from.Close)
 
 	to, err := os.OpenFile(target, os.O_RDWR|os.O_CREATE, info.Mode())
 	if err != nil {
 		return err
 	}
-	defer to.Close()
+	defer utils.DeferCheck(to.Close)
 
 	if _, err = io.Copy(to, from); err != nil {
 		return err

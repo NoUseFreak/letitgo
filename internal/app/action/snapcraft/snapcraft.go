@@ -53,13 +53,15 @@ func (c *snapcraft) Execute(cfg config.LetItGoConfig) error {
 	if err := os.MkdirAll(metaDir, 0777); err != nil {
 		return err
 	}
-	defer os.RemoveAll(dir)
+	defer utils.DeferCheck(func() error { return os.RemoveAll(dir) })
 
 	for _, assetGlob := range c.Assets {
 		files, _ := filepath.Glob(assetGlob)
 		for _, path := range files {
 			destPath := filepath.Join(dir, filepath.Base(path))
-			os.Link(path, destPath)
+			if err := os.Link(path, destPath); err != nil {
+				return err
+			}
 		}
 	}
 

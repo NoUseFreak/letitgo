@@ -22,10 +22,12 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 
 	tags := map[string]*plumbing.Reference{}
 	tagrefs, _ := repo.Tags()
-	tagrefs.ForEach(func(t *plumbing.Reference) error {
+	if err := tagrefs.ForEach(func(t *plumbing.Reference) error {
 		tags[t.Hash().String()] = t
 		return nil
-	})
+	}); err != nil {
+		return nil, err
+	}
 
 	cIter, err := repo.Log(&git.LogOptions{
 		From:  ref.Hash(),
@@ -41,7 +43,7 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 	}}
 	last := 0
 
-	cIter.ForEach(func(c *object.Commit) error {
+	err = cIter.ForEach(func(c *object.Commit) error {
 		if tag, ok := tags[c.Hash.String()]; ok {
 			last++
 			tree = append(tree, releaseBlock{
@@ -64,6 +66,10 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 		tree[last].Commits = append(tree[last].Commits, newCommit(c))
 		return nil
 	})
+
+	if err != nil {
+		return &tree, err
+	}
 
 	return &tree, nil
 }

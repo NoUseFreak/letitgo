@@ -18,10 +18,14 @@ func Template(tplStr string, cfg config.LetItGoConfig, data ...interface{}) (str
 
 	var tplVars map[string]interface{}
 	inrec, _ := json.Marshal(cfg)
-	json.Unmarshal(inrec, &tplVars)
+	if err := json.Unmarshal(inrec, &tplVars); err != nil {
+		return "", err
+	}
 	for _, d := range data {
 		inrec, _ = json.Marshal(d)
-		json.Unmarshal(inrec, &tplVars)
+		if err := json.Unmarshal(inrec, &tplVars); err != nil {
+			return "", err
+		}
 	}
 	tplVars["Version"] = cfg.Version()
 

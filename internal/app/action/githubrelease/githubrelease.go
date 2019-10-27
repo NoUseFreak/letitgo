@@ -39,7 +39,9 @@ func (c *githubrelease) Execute(cfg config.LetItGoConfig) error {
 	templateProps(c, &cfg)
 
 	if c.Owner == "" || c.Repo == "" {
-		resolveOwnerRepo(c)
+		if err := resolveOwnerRepo(c); err != nil {
+			return err
+		}
 	}
 
 	files := []string{}
