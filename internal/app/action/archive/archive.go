@@ -49,6 +49,10 @@ func (c *archive) Execute(cfg config.LetItGoConfig) error {
 		c.Method = "zip"
 	}
 
+	if _, err := os.Stat(c.Source); err != nil {
+		return err
+	}
+
 	directories, err := filepath.Glob(c.Source)
 	if err != nil {
 		return fmt.Errorf("Failed to resolve directories - %s", err.Error())

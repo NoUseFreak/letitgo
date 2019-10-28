@@ -34,6 +34,13 @@ func executeRelease(cmd *cobra.Command, args []string) {
 	utils.ParseYamlFile(cfgFile, &cfgWrapper)
 	cfg := cfgWrapper.LetItGo
 
+	if err := doRelease(cfg, getVersion(args)); err != nil {
+		os.Exit(1)
+	}
+	os.Exit(0)
+}
+
+func doRelease(cfg Config, version string) error {
 	var workload action.Actions
 	for _, a := range cfg.Actions {
 		actionType := a["type"].(string)
@@ -54,15 +61,13 @@ func executeRelease(cmd *cobra.Command, args []string) {
 
 	sort.Sort(action.ByWeight{Actions: workload})
 
-	version := getVersion(args)
-
 	ligConfig := config.NewConfig(version)
 	ligConfig.Name = cfg.Name
 	ligConfig.Description = cfg.Description
 
 	if len(workload) == 0 {
 		color.Yellow("No supported actions found")
-		os.Exit(0)
+		return nil
 	}
 
 	for _, action := range workload {
@@ -73,8 +78,10 @@ func executeRelease(cmd *cobra.Command, args []string) {
 				color.Yellow("  " + er.Error())
 			default:
 				ui.Error(err.Error())
-				os.Exit(1)
+				return err
 			}
 		}
 	}
+
+	return nil
 }

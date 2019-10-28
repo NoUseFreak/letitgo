@@ -71,13 +71,11 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 }
 
 func newCommit(c *object.Commit) commit {
-	commit := commit{
+	return commit{
 		Message:      c.Message,
 		MessageShort: strings.Split(utils.NormalizeNewlines(c.Message), "\n")[0],
 		Hash:         c.Hash.String(),
 	}
-
-	return commit
 }
 
 type releaseBlock struct {
