@@ -2,6 +2,7 @@
 
 [![Build status](https://img.shields.io/travis/NoUseFreak/letitgo/master?style=flat-square)](https://travis-ci.org/NoUseFreak/letitgo)
 [![Release](https://img.shields.io/github/v/release/NoUseFreak/letitgo?style=flat-square)](https://github.com/NoUseFreak/letitgo/releases)
+[![Report](https://goreportcard.com/badge/github.com/nousefreak/letitgo?style=flat-square)](https://goreportcard.com/report/github.com/nousefreak/letitgo)
 [![Maintained](https://img.shields.io/maintenance/yes/2019?style=flat-square)](https://github.com/NoUseFreak/letitgo)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/nousefreak/letitgo?style=flat-square)](https://hub.docker.com/r/nousefreak/letitgo)
 [![Website](https://img.shields.io/netlify/7c9a64af-aefa-4157-b681-20833d61f7d1?style=flat-square)](https://letitgo.nousefreak.be/)
