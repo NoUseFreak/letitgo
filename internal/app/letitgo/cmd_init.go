@@ -33,7 +33,7 @@ func executeInit(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	cfgFile := "./.release.yml"
+	cfgFile, _ := cmd.Flags().GetString("config")
 	_, err = os.Stat(cfgFile)
 	if os.IsNotExist(err) {
 		ui.Phase("Creating config")

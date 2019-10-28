@@ -30,7 +30,8 @@ func init() {
 func executeRelease(cmd *cobra.Command, args []string) {
 	ui.Title("LetItGo")
 	cfgWrapper := struct{ LetItGo Config }{LetItGo: Config{}}
-	utils.ParseYamlFile(".release.yml", &cfgWrapper)
+	cfgFile, _ := cmd.Flags().GetString("config")
+	utils.ParseYamlFile(cfgFile, &cfgWrapper)
 	cfg := cfgWrapper.LetItGo
 
 	var workload action.Actions
