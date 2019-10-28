@@ -111,6 +111,7 @@ func (c *GithubClient) UploadAsset(releaseID int64, asset string) error {
 	return c.uploadAsset(releaseID, asset)
 }
 
+// RepoExists checks if the repo exists. It will return an error if it does not.
 func (c *GithubClient) RepoExists() error {
 	if err := c.init(); err != nil {
 		return errors.Wrap(err, "Failed to init client")
@@ -123,6 +124,7 @@ func (c *GithubClient) RepoExists() error {
 	return nil
 }
 
+// CreateForkFrom will create a for of owner/repo to your github account.
 func (c *GithubClient) CreateForkFrom(owner, repo string) error {
 	if err := c.init(); err != nil {
 		return errors.Wrap(err, "Failed to init client")
@@ -144,6 +146,7 @@ func (c *GithubClient) CreateForkFrom(owner, repo string) error {
 	return errors.Wrap(err, "Failed to verify fork got created.")
 }
 
+// PublishFile will commit changes to a single file.
 func (c *GithubClient) PublishFile(path, content, message, branch string) error {
 	if err := c.init(); err != nil {
 		return errors.Wrap(err, "Failed to init client")
