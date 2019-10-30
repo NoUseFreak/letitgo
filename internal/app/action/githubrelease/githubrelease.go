@@ -46,9 +46,7 @@ func (c *githubrelease) Execute(cfg config.LetItGoConfig) error {
 
 	files := []string{}
 	for _, a := range c.Assets {
-		for _, f := range a.GetFiles() {
-			files = append(files, f)
-		}
+		files = append(files, a.GetFiles()...)
 	}
 
 	client := utils.GithubClient{

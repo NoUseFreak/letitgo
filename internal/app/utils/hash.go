@@ -26,7 +26,7 @@ func BuildURLHash(alg, url string) (string, error) {
 	defer DeferCheck(resp.Body.Close)
 
 	if resp.StatusCode != 200 {
-		return "", errors.New("Not found")
+		return "", errors.New("not found")
 	}
 
 	return BuildHash(alg, resp.Body)
@@ -42,7 +42,7 @@ func BuildHash(alg string, reader io.Reader) (string, error) {
 	case "sha1":
 		hasher = sha1.New()
 	default:
-		return "", errors.New("Unknown hashing algorithm")
+		return "", errors.New("unknown hashing algorithm")
 	}
 
 	_, err := io.Copy(hasher, reader)

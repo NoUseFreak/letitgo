@@ -44,7 +44,7 @@ func (a *changelog) Execute(cfg config.LetItGoConfig) error {
 
 	r, err := git.PlainOpen(".")
 	if err != nil {
-		return fmt.Errorf("Unable to find git repo - %s", err.Error())
+		return fmt.Errorf("unable to find git repo - %s", err.Error())
 	}
 
 	if lastCommitIsChangelog(r, a.Message, a.File) {
@@ -54,7 +54,7 @@ func (a *changelog) Execute(cfg config.LetItGoConfig) error {
 
 	tree, err := buildReleaseBlocks(r, []string{a.Message})
 	if err != nil {
-		return fmt.Errorf("Unable to build release blocks - %s", err.Error())
+		return fmt.Errorf("unable to build release blocks - %s", err.Error())
 	}
 
 	vars := struct {
@@ -64,12 +64,12 @@ func (a *changelog) Execute(cfg config.LetItGoConfig) error {
 	}
 	out, err := templateChangelog(vars)
 	if err != nil {
-		return fmt.Errorf("Unable to template changelog - %s", err.Error())
+		return fmt.Errorf("unable to template changelog - %s", err.Error())
 	}
 
 	repo, err := utils.GetRemote(".")
 	if err != nil {
-		return fmt.Errorf("Unable to resolve remote - %s", err.Error())
+		return fmt.Errorf("unable to resolve remote - %s", err.Error())
 	}
 
 	ui.Trace(out)

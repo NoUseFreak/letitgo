@@ -17,7 +17,7 @@ import (
 func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock, error) {
 	ref, err := repo.Head()
 	if err != nil {
-		return nil, fmt.Errorf("Failed to find HEAD - %s", err.Error())
+		return nil, fmt.Errorf("failed to find HEAD - %s", err.Error())
 	}
 
 	tags := map[string]*plumbing.Reference{}
@@ -34,7 +34,7 @@ func buildReleaseBlocks(repo *git.Repository, ignore []string) (*[]releaseBlock,
 		Order: git.LogOrderCommitterTime,
 	})
 	if err != nil {
-		return nil, fmt.Errorf("Failed to fetch log - %s", err.Error())
+		return nil, fmt.Errorf("failed to fetch log - %s", err.Error())
 	}
 
 	tree := []releaseBlock{{

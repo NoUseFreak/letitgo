@@ -55,11 +55,11 @@ func (c *archive) Execute(cfg config.LetItGoConfig) error {
 
 	directories, err := filepath.Glob(c.Source)
 	if err != nil {
-		return fmt.Errorf("Failed to resolve directories - %s", err.Error())
+		return fmt.Errorf("failed to resolve directories - %s", err.Error())
 	}
 
 	if err := os.MkdirAll(c.Target, 0755); err != nil {
-		return fmt.Errorf("Failed to create target directory - %s", err.Error())
+		return fmt.Errorf("failed to create target directory - %s", err.Error())
 	}
 
 	for _, dir := range directories {

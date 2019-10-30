@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/fatih/color"
 	"github.com/sirupsen/logrus"
@@ -44,8 +45,7 @@ func Warn(format string, args ...interface{}) {
 
 // Error prints an error statement.
 func Error(format string, args ...interface{}) {
-	color.Red(format, args...)
-	// logrus.Errorf(format, args...)
+	fmt.Fprintln(os.Stderr, color.RedString(format, args...))
 }
 
 // Panic prints an panic statement.

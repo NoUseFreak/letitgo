@@ -62,7 +62,7 @@ func (c *docker) Execute(cfg config.LetItGoConfig) error {
 	for _, template := range c.Images {
 		name, err := utils.Template(template, cfg, c)
 		if err != nil {
-			return fmt.Errorf("Failed to build image names - %s", err.Error())
+			return fmt.Errorf("failed to build image names - %s", err.Error())
 		}
 		imageNames = append(imageNames, name)
 	}
