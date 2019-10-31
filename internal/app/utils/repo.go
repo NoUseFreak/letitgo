@@ -17,7 +17,7 @@ func ParseURI(uri string) (*GitURI, error) {
 	gitURI := GitURI{
 		Host: "github.com",
 	}
-	r := regexp.MustCompile(`^.*github.com[/:](?P<org>[^/]+)/(?P<name>[^/\\.]+)`)
+	r := regexp.MustCompile(`^.*github.com[/:](?P<org>[^/]+)/(?P<name>[^/\.]+)`)
 	if !r.MatchString(uri) {
 		return &gitURI, errors.New("could not parse uri")
 	}
