@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.8.5 (October 31, 2019)
+
+- Refactor git
+- Fix regex
+- Add staticcheck, including fixes
+- Add archive tests
+- Allow to set config file
+- Add goreportcard badge
+- Fix typo
+- Fix golint
+- Document full depth cloning to generate changelog
+
+
 ## 0.8.4 (October 27, 2019)
 
 - Clone full depth
