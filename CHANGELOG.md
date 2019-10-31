@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.6 (October 31, 2019)
+
+- Fix defer warning
+
+
 ## 0.8.5 (October 31, 2019)
 
 - Refactor git
