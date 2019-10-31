@@ -1,9 +1,12 @@
 package githubrelease
 
 import (
+	"fmt"
+
 	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	"github.com/NoUseFreak/letitgo/internal/app/utils/git"
 )
 
 // New returns an action for githubrelease
@@ -49,10 +52,18 @@ func (c *githubrelease) Execute(cfg config.LetItGoConfig) error {
 		files = append(files, a.GetFiles()...)
 	}
 
-	client := utils.GithubClient{
-		Owner: c.Owner,
-		Repo:  c.Repo,
+	client, err := git.NewClient(
+		fmt.Sprintf(
+			"git@github.com:%s/%s.git",
+			c.Owner,
+			c.Repo,
+		),
+		utils.DryRun.IsEnabled(),
+	)
+	if err != nil {
+		return err
 	}
+
 	rID, err := client.CreateRelease(
 		cfg.Version().String(),
 		c.Title,
@@ -62,5 +73,5 @@ func (c *githubrelease) Execute(cfg config.LetItGoConfig) error {
 		return err
 	}
 
-	return client.UploadAssets(rID, files)
+	return client.UploadReleaseAssets(rID, files)
 }

@@ -1,4 +1,4 @@
-package utils
+package git
 
 import (
 	"strings"
@@ -14,7 +14,7 @@ func TestGetRemote(t *testing.T) {
 	}{
 		{
 			name:    "current",
-			dir:     "../../../",
+			dir:     "../../../../",
 			want:    "NoUseFreak/letitgo",
 			wantErr: false,
 		},

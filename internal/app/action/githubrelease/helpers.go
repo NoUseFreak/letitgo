@@ -3,6 +3,7 @@ package githubrelease
 import (
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	gitclient "github.com/NoUseFreak/letitgo/internal/app/utils/git"
 )
 
 func templateProps(c *githubrelease, cfg *config.LetItGoConfig) {
@@ -11,7 +12,7 @@ func templateProps(c *githubrelease, cfg *config.LetItGoConfig) {
 }
 
 func resolveOwnerRepo(c *githubrelease) error {
-	repo, err := utils.GetRemote(".")
+	repo, err := gitclient.GetRemote(".")
 	if err != nil {
 		return err
 	}

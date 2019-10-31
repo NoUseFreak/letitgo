@@ -8,9 +8,8 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	"github.com/NoUseFreak/letitgo/internal/app/utils/git"
 	"github.com/pkg/errors"
-
-	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 )
 
 const (
@@ -71,13 +70,20 @@ func (c *gofish) Execute(cfg config.LetItGoConfig) error {
 
 	c.templateProps(&cfg)
 
-	client := utils.GithubClient{
-		Owner: c.GithubUsername,
-		Repo:  gofishRepository,
+	client, err := git.NewClient(
+		fmt.Sprintf(
+			"git@github.com:%s/%s.git",
+			c.GithubUsername,
+			gofishRepository,
+		),
+		utils.DryRun.IsEnabled(),
+	)
+	if err != nil {
+		return err
 	}
 
 	var branchname string
-	if client.RepoExists() != nil {
+	if !client.Exists() {
 		ui.Step("Fork not found, creating...")
 		if err := client.CreateForkFrom(gofishOrganization, gofishRepository); err != nil {
 			return err
@@ -94,13 +100,6 @@ func (c *gofish) Execute(cfg config.LetItGoConfig) error {
 		a.Sha256 = s
 	}
 
-	if utils.DryRun.IsEnabled() {
-		return &e.SkipError{
-			Part:   "Not going to create PR for gofish",
-			Reason: "dryrun",
-		}
-	}
-
 	path := fmt.Sprintf("Food/%s.lua", cfg.Name)
 	message := fmt.Sprintf("%s %s", cfg.Name, cfg.Version())
 	content, err := utils.Template(luaTpl, cfg, c)
@@ -109,7 +108,7 @@ func (c *gofish) Execute(cfg config.LetItGoConfig) error {
 	}
 
 	ui.Step("Publishing lua script")
-	err = client.PublishFile(path, content, message, branchname)
+	err = client.PublishFile(path, content, message, &branchname)
 	if err != nil {
 		return errors.Wrapf(err, "Failed to publish gofish file")
 	}

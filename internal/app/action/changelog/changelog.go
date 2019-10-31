@@ -7,6 +7,7 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	gitclient "github.com/NoUseFreak/letitgo/internal/app/utils/git"
 	"gopkg.in/src-d/go-git.v4"
 )
 
@@ -67,7 +68,7 @@ func (a *changelog) Execute(cfg config.LetItGoConfig) error {
 		return fmt.Errorf("unable to template changelog - %s", err.Error())
 	}
 
-	repo, err := utils.GetRemote(".")
+	repo, err := gitclient.GetRemote(".")
 	if err != nil {
 		return fmt.Errorf("unable to resolve remote - %s", err.Error())
 	}
@@ -79,6 +80,12 @@ func (a *changelog) Execute(cfg config.LetItGoConfig) error {
 	if err := utils.WriteFile(a.File, out); err != nil {
 		return err
 	}
-
-	return utils.PublishFile(repo, a.File, out, a.Message)
+	client, err := gitclient.NewClient(
+		repo,
+		utils.DryRun.IsEnabled(),
+	)
+	if err != nil {
+		return err
+	}
+	return client.PublishFile(a.File, out, a.Message, nil)
 }

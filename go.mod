@@ -30,7 +30,7 @@ require (
 	github.com/huandu/xstrings v1.2.0 // indirect
 	github.com/imdario/mergo v0.3.8 // indirect
 	github.com/kami-zh/go-capturer v0.0.0-20171211120116-e492ea43421d
-	github.com/matryer/try v0.0.0-20161228173917-9ac251b645a2 // indirect
+	github.com/matryer/try v0.0.0-20161228173917-9ac251b645a2
 	github.com/mitchellh/copystructure v1.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/morikuni/aec v1.0.0 // indirect

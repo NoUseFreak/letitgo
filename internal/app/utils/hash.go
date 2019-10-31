@@ -7,9 +7,11 @@ import (
 	"errors"
 	"hash"
 	"io"
+	"net"
 	"net/http"
 	"time"
 
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 )
 
@@ -17,13 +19,23 @@ import (
 func BuildURLHash(alg, url string) (string, error) {
 	ui.Trace("Downloading %s", url)
 	client := http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: 60 * time.Second,
+		Transport: &http.Transport{
+			DialContext: (&net.Dialer{
+				Timeout:   60 * time.Second,
+				KeepAlive: 60 * time.Second,
+			}).DialContext,
+			TLSHandshakeTimeout: 10 * time.Second,
+
+			ExpectContinueTimeout: 4 * time.Second,
+			ResponseHeaderTimeout: 3 * time.Second,
+		},
 	}
 	resp, err := client.Get(url)
 	if err != nil {
 		return "", err
 	}
-	defer DeferCheck(resp.Body.Close)
+	defer e.DeferCheck(resp.Body.Close)
 
 	if resp.StatusCode != 200 {
 		return "", errors.New("not found")

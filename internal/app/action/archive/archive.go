@@ -11,8 +11,9 @@ import (
 
 	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
-	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/pkg/errors"
+
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 )
 
 // New returns an action for archive
@@ -47,10 +48,6 @@ func (*archive) Weight() int {
 func (c *archive) Execute(cfg config.LetItGoConfig) error {
 	if c.Method == "" {
 		c.Method = "zip"
-	}
-
-	if _, err := os.Stat(c.Source); err != nil {
-		return err
 	}
 
 	directories, err := filepath.Glob(c.Source)
@@ -92,10 +89,10 @@ func zipCreate(source, target string, extras []string) error {
 	if err != nil {
 		return err
 	}
-	defer utils.DeferCheck(zipfile.Close)
+	defer e.DeferCheck(zipfile.Close)
 
 	archive := zip.NewWriter(zipfile)
-	defer utils.DeferCheck(archive.Close)
+	defer e.DeferCheck(archive.Close)
 
 	info, err := os.Stat(source)
 	if err != nil {
@@ -148,7 +145,7 @@ func zipAddFile(archive *zip.Writer, baseDir string, info os.FileInfo, path, sou
 	if err != nil {
 		return err
 	}
-	defer utils.DeferCheck(file.Close)
+	defer e.DeferCheck(file.Close)
 	_, err = io.Copy(writer, file)
 
 	return err
@@ -164,13 +161,13 @@ func copyFile(source, target string) error {
 	if err != nil {
 		return err
 	}
-	defer utils.DeferCheck(from.Close)
+	defer e.DeferCheck(from.Close)
 
 	to, err := os.OpenFile(target, os.O_RDWR|os.O_CREATE, info.Mode())
 	if err != nil {
 		return err
 	}
-	defer utils.DeferCheck(to.Close)
+	defer e.DeferCheck(to.Close)
 
 	if _, err = io.Copy(to, from); err != nil {
 		return err

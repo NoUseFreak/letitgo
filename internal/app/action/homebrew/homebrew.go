@@ -8,6 +8,7 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
+	"github.com/NoUseFreak/letitgo/internal/app/utils/git"
 	"github.com/pkg/errors"
 )
 
@@ -69,5 +70,12 @@ func (c *homebrew) Execute(cfg config.LetItGoConfig) error {
 	message := fmt.Sprintf("Upgrade %s to %s", cfg.Name, cfg.Version())
 
 	ui.Step("Uploading %s", filename)
-	return utils.PublishFile(c.Tap.URL, filename, content, message)
+	client, err := git.NewClient(
+		c.Tap.URL,
+		utils.DryRun.IsEnabled(),
+	)
+	if err != nil {
+		return err
+	}
+	return client.PublishFile(filename, content, message, nil)
 }

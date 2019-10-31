@@ -110,7 +110,7 @@ func (c *docker) buildImage(client *dckr.Client, imageName string) error {
 	if err != nil {
 		return errors.Wrapf(err, "Failed to build %s", c.Dockerfile)
 	}
-	defer utils.DeferCheck(resp.Body.Close)
+	defer e.DeferCheck(resp.Body.Close)
 
 	_, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -154,7 +154,7 @@ func (c *docker) pushImages(client *dckr.Client, imageNames []string) error {
 		if err != nil {
 			return err
 		}
-		defer utils.DeferCheck(out.Close)
+		defer e.DeferCheck(out.Close)
 		_, err = ioutil.ReadAll(out)
 		if err != nil {
 			return err

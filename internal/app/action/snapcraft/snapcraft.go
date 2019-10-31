@@ -13,6 +13,7 @@ import (
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/sirupsen/logrus"
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 )
 
 // New returns an action for snapcraft
@@ -53,7 +54,7 @@ func (c *snapcraft) Execute(cfg config.LetItGoConfig) error {
 	if err := os.MkdirAll(metaDir, 0777); err != nil {
 		return err
 	}
-	defer utils.DeferCheck(func() error { return os.RemoveAll(dir) })
+	defer e.DeferCheck(func() error { return os.RemoveAll(dir) })
 
 	for _, assetGlob := range c.Assets {
 		files, _ := filepath.Glob(assetGlob)
