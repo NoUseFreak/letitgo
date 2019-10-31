@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"time"
 
-	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/google/go-github/github"
 	"github.com/matryer/try"
@@ -136,7 +135,7 @@ func (c *githubClient) uploadReleaseAsset(rID int64, path string) error {
 	if err != nil {
 		return errors.Wrapf(err, "Failed to open file %v", path)
 	}
-	defer e.DeferCheck(file.Close)
+	defer func() { _ = file.Close() }()
 
 	_, _, err = c.client.Repositories.UploadReleaseAsset(
 		c.ctx,
