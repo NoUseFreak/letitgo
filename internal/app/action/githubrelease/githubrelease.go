@@ -1,12 +1,11 @@
 package githubrelease
 
 import (
-	"fmt"
-
 	"github.com/NoUseFreak/letitgo/internal/app/action"
 	"github.com/NoUseFreak/letitgo/internal/app/config"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
 	"github.com/NoUseFreak/letitgo/internal/app/utils/git"
+	e "github.com/NoUseFreak/letitgo/internal/app/errors"
 )
 
 // New returns an action for githubrelease
@@ -52,16 +51,16 @@ func (c *githubrelease) Execute(cfg config.LetItGoConfig) error {
 		files = append(files, a.GetFiles()...)
 	}
 
-	client, err := git.NewClient(
-		fmt.Sprintf(
-			"git@github.com:%s/%s.git",
-			c.Owner,
-			c.Repo,
-		),
-		utils.DryRun.IsEnabled(),
-	)
+	client, err := git.NewGithubClient(c.Owner, c.Repo)
 	if err != nil {
 		return err
+	}
+
+	if utils.DryRun.IsEnabled() {
+		return &e.SkipError{
+			Reason: "dryrun",
+			Part:   "push images",
+		}
 	}
 
 	rID, err := client.CreateRelease(

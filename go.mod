@@ -24,7 +24,6 @@ require (
 	github.com/fatih/color v1.7.0
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/google/go-github v17.0.0+incompatible
-	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/gorilla/mux v1.7.3 // indirect
 	github.com/huandu/xstrings v1.2.0 // indirect
@@ -41,10 +40,10 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.5
 	github.com/whilp/git-urls v0.0.0-20191001220047-6db9661140c0
+	github.com/xanzy/go-gitlab v0.21.0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	google.golang.org/grpc v1.24.0 // indirect
-	gopkg.in/matryer/try.v1 v1.0.0-20150601225556-312d2599e12e
 	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/yaml.v2 v2.2.4
 	gotest.tools v2.2.0+incompatible // indirect

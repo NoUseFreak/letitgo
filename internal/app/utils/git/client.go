@@ -11,8 +11,6 @@ import (
 
 type Client interface {
 	PublishFile(path, content, message string, branch *string) error
-	CreateRelease(version, title, description string) (string, error)
-	UploadReleaseAssets(releaseID string, assets []string) error
 	CreateForkFrom(owner, repo string) error
 	CreateBranch(branch string) error
 	Exists() bool
@@ -27,13 +25,15 @@ func NewClient(repoURL string, dryRun bool) (Client, error) {
 		return nil, errors.Wrap(err, "failed parsing giturl")
 	}
 
+	owner := strings.ReplaceAll(filepath.Dir(url.Path), "/", "")
+	basename := filepath.Base(url.Path)
+	repo := strings.TrimSuffix(basename, filepath.Ext(basename))
+
 	switch url.Hostname() {
 	case "github.com":
-		owner := strings.ReplaceAll(filepath.Dir(url.Path), "/", "")
-		basename := filepath.Base(url.Path)
-		repo := strings.TrimSuffix(basename, filepath.Ext(basename))
-
 		return NewGithubClient(owner, repo)
+	case "gitlab.com":
+		return NewGitlabClient(owner, repo)
 	}
 
 	return nil, fmt.Errorf("could not find client for %s", repoURL)
