@@ -3,6 +3,7 @@ package letitgo
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/NoUseFreak/letitgo/internal/app/ui"
 	"github.com/NoUseFreak/letitgo/internal/app/utils"
@@ -10,10 +11,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const tagLine = "LetItGo Release helper"
+const infoLine = `
+LetItGo is a release helper that allows you to simplify the release process
+for simple applications. It can help you perform a list of actions that would
+otherwise need to be scripted all over again.
+`
+
 var rootCmd = &cobra.Command{
 	Use:   "letitgo <version>",
-	Short: "LetItGo Release helper",
-	Long:  `LetItGo release helper`,
+	Short: tagLine,
 	Args:  cobra.RangeArgs(0, 1),
 	Run:   runRoot,
 }
@@ -35,6 +42,7 @@ func init() {
 		}
 		return nil
 	}
+	rootCmd.Long = getLongDescription()
 }
 
 // Execute runs the cli application.
@@ -61,4 +69,17 @@ func getVersion(args []string) string {
 	}
 
 	return v
+}
+
+func getLongDescription() string {
+	actions := []string{}
+	for _, a := range getActions() {
+		actions = append(actions, fmt.Sprintf(" - %s", a.Name()))
+	}
+	return fmt.Sprintf(
+		"%s\n%s\nsupported actions:\n%s",
+		tagLine,
+		infoLine,
+		strings.Join(actions, "\n"),
+	)
 }
