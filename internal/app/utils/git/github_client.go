@@ -26,7 +26,7 @@ type githubClient struct {
 func NewGithubClient(owner, repo string) (*githubClient, error) {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
-		return nil, errors.New("Make sure to set GITHUB_TOKEN")
+		return nil, errors.New("make sure to set GITHUB_TOKEN")
 	}
 
 	ctx := context.Background()

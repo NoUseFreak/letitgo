@@ -16,7 +16,7 @@ type gitlabClient struct {
 func NewGitlabClient(owner, repo string) (*gitlabClient, error) {
 	token := os.Getenv("GITLAB_TOKEN")
 	if token == "" {
-		return nil, errors.New("Make sure to set GITLAB_TOKEN")
+		return nil, errors.New("make sure to set GITLAB_TOKEN")
 	}
 
 	return &gitlabClient{

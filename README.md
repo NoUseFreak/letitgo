@@ -80,6 +80,7 @@ githubrelease | Publish generated artifacts and attach them to a github release.
 gofish | Creates a PR to update the gofish fish-food.
 helm | Package and/or publish helm charts to a registry like chartmuseum.
 homebrew | Update your personal homebrew tap with your latest config.
+slack | Send message to slack to mark a complete release.
 snapcraft | Package and upload your snap to snapcraft.
 
 All actions and example configuration can be found in the [docs directory](docs/).

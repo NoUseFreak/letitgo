@@ -35,3 +35,7 @@ letitgo:
         - os: windows
           arch: amd64
           url: https://github.com/NoUseFreak/letitgo/releases/download/{{ .Version }}/windows_amd64.zip
+
+    - type: slack
+      channel: "#released"
+ 
