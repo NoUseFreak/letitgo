@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0 (November 7, 2019)
+
+- Add slack integration
+- Add fuller description
+- Add gitlab support
+
+
 ## 0.8.6 (October 31, 2019)
 
 - Fix defer warning
