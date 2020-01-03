@@ -21,7 +21,7 @@ require (
 	github.com/docker/docker v0.0.0-00010101000000-000000000000
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
-	github.com/fatih/color v1.7.0
+	github.com/fatih/color v1.8.0
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/google/uuid v1.1.1 // indirect
