@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.9.1 (February 14, 2020)
+
+- Handle dash in project name for homebrew taps
+- Bump github.com/xanzy/go-gitlab from 0.24.0 to 0.25.0
+- Bump github.com/xanzy/go-gitlab from 0.23.0 to 0.24.0
+- Bump github.com/xanzy/go-gitlab from 0.22.3 to 0.23.0
+- Bump gopkg.in/yaml.v2 from 2.2.7 to 2.2.8
+- Bump github.com/xanzy/go-gitlab from 0.22.2 to 0.22.3
+- Bump github.com/pkg/errors from 0.8.1 to 0.9.1
+- Bump github.com/fatih/color from 1.8.0 to 1.9.0
+- Bump github.com/fatih/color from 1.7.0 to 1.8.0
+- Bump github.com/AlecAivazis/survey/v2 from 2.0.4 to 2.0.5
+- Bump github.com/xanzy/go-gitlab from 0.22.1 to 0.22.2
+- Bump gopkg.in/yaml.v2 from 2.2.5 to 2.2.7
+- Bump gopkg.in/yaml.v2 from 2.2.4 to 2.2.5
+- Bump github.com/xanzy/go-gitlab from 0.21.0 to 0.22.1
+
+
 ## 0.9.0 (November 7, 2019)
 
 - Add slack integration
