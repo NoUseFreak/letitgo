@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.10.0 (February 15, 2020)
+
+- Add support for whalebrew
+
+
 ## 0.9.1 (February 14, 2020)
 
 - Handle dash in project name for homebrew taps
