@@ -43,6 +43,12 @@ __Docker__
 docker run -v $(pwd):/app nousefreak/letitgo --version
 ```
 
+__Whalebrew__
+
+```bash
+whalebrew install nousefreak/letitgo
+```
+
 __Anywhere__
 
 ```bash
