@@ -5,6 +5,6 @@ ADD . ./
 RUN DEV=true scripts/build.sh
 
 FROM alpine 
-WORKDIR /app
+RUN apk add --no-cache git
 COPY --from=build /go/src/app/build/bin/letitgo /letitgo
 ENTRYPOINT [ "/letitgo" ]
