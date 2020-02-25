@@ -5,7 +5,7 @@ go 1.13
 replace github.com/docker/docker => github.com/docker/engine v1.4.2-0.20190717161051-705d9623b7c1
 
 require (
-	github.com/AlecAivazis/survey/v2 v2.0.5
+	github.com/AlecAivazis/survey/v2 v2.0.6
 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/Masterminds/goutils v1.1.0 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
