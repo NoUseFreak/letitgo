@@ -13,7 +13,7 @@ require (
 	github.com/Microsoft/go-winio v0.4.14 // indirect
 	github.com/Microsoft/hcsshim v0.8.6 // indirect
 	github.com/NoUseFreak/go-vembed v0.0.0-20190924200302-0a945ec137cf
-	github.com/caarlos0/env/v6 v6.2.0
+	github.com/caarlos0/env/v6 v6.2.1
 	github.com/cheekybits/is v0.0.0-20150225183255-68e9c0620927 // indirect
 	github.com/containerd/continuity v0.0.0-20190827140505-75bee3e2ccb6 // indirect
 	github.com/coreos/go-semver v0.3.0
