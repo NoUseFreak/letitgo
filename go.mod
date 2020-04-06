@@ -41,7 +41,7 @@ require (
 	github.com/sirupsen/logrus v1.5.0
 	github.com/spf13/cobra v0.0.7
 	github.com/whilp/git-urls v0.0.0-20191001220047-6db9661140c0
-	github.com/xanzy/go-gitlab v0.29.0
+	github.com/xanzy/go-gitlab v0.31.0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	google.golang.org/grpc v1.24.0 // indirect
