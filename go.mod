@@ -31,7 +31,7 @@ require (
 	github.com/kami-zh/go-capturer v0.0.0-20171211120116-e492ea43421d
 	github.com/matryer/try v0.0.0-20161228173917-9ac251b645a2
 	github.com/mitchellh/copystructure v1.0.0 // indirect
-	github.com/mitchellh/mapstructure v1.3.0
+	github.com/mitchellh/mapstructure v1.3.1
 	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/nlopes/slack v0.6.0
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
@@ -43,7 +43,6 @@ require (
 	github.com/whilp/git-urls v0.0.0-20191001220047-6db9661140c0
 	github.com/xanzy/go-gitlab v0.31.0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
-	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	google.golang.org/grpc v1.24.0 // indirect
 	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/yaml.v2 v2.2.8
