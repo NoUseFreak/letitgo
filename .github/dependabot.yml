@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: gomod
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - NoUseFreak
+  ignore:
+  - dependency-name: github.com/xanzy/go-gitlab
+    versions:
+    - 0.44.0
+    - 0.45.0
+    - 0.46.0
+  - dependency-name: github.com/AlecAivazis/survey/v2
+    versions:
+    - 2.2.8
+  - dependency-name: github.com/sirupsen/logrus
+    versions:
+    - 1.7.1
+    - 1.8.0
