@@ -7,7 +7,7 @@ replace github.com/docker/docker => github.com/docker/engine v1.4.2-0.2019071716
 require (
 	github.com/AlecAivazis/survey/v2 v2.2.7
 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
-	github.com/Masterminds/goutils v1.1.0 // indirect
+	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/Microsoft/go-winio v0.4.14 // indirect
